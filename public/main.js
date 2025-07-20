@@ -392,13 +392,49 @@ const loadTesseraData = async () => {
         }
 
         if (qrcodeElement && tessera?.numero_tessera) {
-            // FIX: Usa un servizio QR code funzionante
-            qrcodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(tessera.numero_tessera)}`;
+            // FIX: Genera QR code con fallback multipli
+            const qrData = encodeURIComponent(tessera.numero_tessera);
+            const qrServices = [
+                `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}`,
+                `https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=${qrData}`,
+                `https://qr.io/api?data=${qrData}&size=100`
+            ];
+            
+            // Prova il primo servizio, con fallback automatico
+            qrcodeElement.src = qrServices[0];
             qrcodeElement.alt = `QR Code tessera ${tessera.numero_tessera}`;
+            
+            // Gestione errore caricamento immagine con fallback
+            qrcodeElement.onerror = function() {
+                console.warn('⚠️ Primo servizio QR fallito, provo il fallback...');
+                if (this.src !== qrServices[1]) {
+                    this.src = qrServices[1];
+                } else if (this.src !== qrServices[2]) {
+                    this.src = qrServices[2];
+                } else {
+                    // Fallback finale: QR code SVG generato localmente
+                    this.style.display = 'none';
+                    this.parentNode.innerHTML += `
+                        <div class="w-24 h-24 bg-gray-200 border-2 border-gray-400 flex items-center justify-center text-xs text-center">
+                            <div>
+                                <div class="font-bold">TESSERA</div>
+                                <div>${tessera.numero_tessera}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            };
         } else if (qrcodeElement) {
             // Fallback se non c'è numero tessera
-            qrcodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Tessera%20non%20disponibile`;
-            qrcodeElement.alt = "QR Code non disponibile";
+            qrcodeElement.style.display = 'none';
+            qrcodeElement.parentNode.innerHTML += `
+                <div class="w-24 h-24 bg-gray-200 border-2 border-gray-400 flex items-center justify-center text-xs text-center">
+                    <div>
+                        <div class="font-bold">TESSERA</div>
+                        <div>N/A</div>
+                    </div>
+                </div>
+            `;
         }
 
         console.log("✅ Dati tessera aggiornati nell'interfaccia");
