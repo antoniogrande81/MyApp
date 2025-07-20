@@ -1,0 +1,737 @@
+/* ============================================= */
+/* CUSTOM CSS - SISTEMA COMPLETO E MODERNO */
+/* Versione: 3.2 - Design Ridisegnato + Fix Tailwind Warning */
+/* ============================================= */
+
+/* ============================================= */
+/* 0. FIX TAILWIND WARNING - NASCONDE IL WARNING DI PRODUZIONE */
+/* ============================================= */
+
+/* Nasconde il warning visivo di Tailwind */
+div[data-dev-hint],
+div[data-tailwind-warning],
+.tailwind-warning {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Nasconde eventuali banner o notifiche di sviluppo */
+div[style*="position: fixed"][style*="top: 0"][style*="z-index"] {
+    display: none !important;
+}
+
+/* ============================================= */
+/* 1. RESET E CONFIGURAZIONI BASE */
+/* ============================================= */
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ============================================= */
+/* 2. SFONDI E GRADIENTS */
+/* ============================================= */
+
+/* Sfondo standard per la maggior parte delle pagine */
+.bg-backgroundLight {
+    background: #F8FAFC !important;
+}
+
+/* Sfondo gradient per homepage */
+.hero-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.hero-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #2400C1 0%, #8E008C 50%, #00BFFF 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    opacity: 0.9;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Sfondo gradient per dashboard dirigente */
+.gradient-bg {
+    background: linear-gradient(135deg, #2400C1 0%, #8E008C 50%, #00BFFF 100%);
+    min-height: 100vh;
+}
+
+/* Aurora background animato */
+.aurora-bg {
+    background: linear-gradient(135deg, #2400C1 0%, #8E008C 50%, #00BFFF 100%);
+    background-size: 400% 400%;
+    animation: aurora 8s ease-in-out infinite;
+    min-height: 100vh;
+}
+
+@keyframes aurora {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ============================================= */
+/* 3. GLASS EFFECTS E CARDS */
+/* ============================================= */
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.glass-effect-strong {
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(36, 0, 193, 0.2);
+}
+
+.content-section {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.management-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.management-card:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+/* ============================================= */
+/* 4. TESTI E TITOLI */
+/* ============================================= */
+
+.gradient-text {
+    background: linear-gradient(135deg, #2400C1, #8E008C) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: bold !important;
+}
+
+.text-white-important {
+    color: white !important;
+}
+
+.text-primary-important {
+    color: #2400C1 !important;
+}
+
+.text-secondary-important {
+    color: #8E008C !important;
+}
+
+.text-danger-important {
+    color: #DC2626 !important;
+}
+
+/* Titoli di sezione con indicatore laterale */
+.section-title {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, #2400C1, #8E008C);
+    border-radius: 2px;
+}
+
+/* ============================================= */
+/* 5. FOOTER NAVIGATION - UNIFORME + FIX PROFILO */
+/* ============================================= */
+
+.footer-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 20 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Container del footer */
+.footer-nav .container,
+.footer-nav-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    padding: 0.75rem 0 !important;
+}
+
+/* Elementi di navigazione */
+.nav-item,
+.footer-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    color: #6b7280 !important;
+    text-decoration: none !important;
+    padding: 0.75rem !important;
+    transition: all 0.3s ease !important;
+    border-radius: 0.75rem !important;
+    min-width: 60px !important;
+    position: relative !important;
+}
+
+/* Hover effect */
+.nav-item:hover,
+.footer-nav-item:hover {
+    color: #2400C1 !important;
+    transform: translateY(-3px) !important;
+    background: rgba(36, 0, 193, 0.1) !important;
+}
+
+/* Stato attivo */
+.nav-item.active,
+.footer-nav-item.active,
+.nav-item.text-primary,
+.nav-item.bg-primary\/10 {
+    color: #2400C1 !important;
+    background: rgba(36, 0, 193, 0.1) !important;
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+}
+
+/* Icone - FIX PRINCIPALE PER PROFILO */
+.nav-item > span:first-child,
+.footer-nav-icon,
+.nav-item > .nav-icon,
+.nav-item > i,
+.nav-item > svg {
+    font-size: 2rem !important; /* text-2xl */
+    line-height: 1 !important;
+    margin-bottom: 0.25rem !important;
+    color: inherit !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Labels */
+.nav-item > span:last-child,
+.footer-nav-label,
+.nav-item > .nav-label {
+    font-size: 0.75rem !important; /* text-xs */
+    margin-top: 0.25rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    color: inherit !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Label attiva */
+.nav-item.active > span:last-child,
+.footer-nav-item.active .footer-nav-label,
+.nav-item.active > .nav-label {
+    font-weight: 700 !important;
+}
+
+/* Fix specifico per icona profilo se usa emoji o caratteri unicode */
+.nav-item[data-nav="profilo"] > span:first-child,
+.nav-item#nav-profilo > span:first-child,
+.profile-icon,
+.user-icon {
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: auto !important;
+    -webkit-font-feature-settings: normal !important;
+    font-feature-settings: normal !important;
+}
+
+/* Specifici per ID per maggiore sicurezza */
+#nav-home.active,
+#nav-tessera.active,
+#nav-servizi.active,
+#nav-profilo.active {
+    color: #2400C1 !important;
+    background: rgba(36, 0, 193, 0.1) !important;
+}
+
+#nav-home.active > *,
+#nav-tessera.active > *,
+#nav-servizi.active > *,
+#nav-profilo.active > *,
+#nav-home.active .footer-nav-icon,
+#nav-home.active .footer-nav-label,
+#nav-tessera.active .footer-nav-icon,
+#nav-tessera.active .footer-nav-label,
+#nav-servizi.active .footer-nav-icon,
+#nav-servizi.active .footer-nav-label,
+#nav-profilo.active .footer-nav-icon,
+#nav-profilo.active .footer-nav-label {
+    color: #2400C1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fix per tutti gli elementi figli dell'icona profilo */
+#nav-profilo,
+#nav-profilo > *,
+.nav-item[href*="profilo"],
+.nav-item[href*="profilo"] > * {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+/* Fallback per icone che potrebbero essere nascoste */
+.nav-item > *[style*="display: none"],
+.footer-nav-item > *[style*="display: none"] {
+    display: block !important;
+}
+
+.nav-item > *[style*="visibility: hidden"],
+.footer-nav-item > *[style*="visibility: hidden"] {
+    visibility: visible !important;
+}
+
+.nav-item > *[style*="opacity: 0"],
+.footer-nav-item > *[style*="opacity: 0"] {
+    opacity: 1 !important;
+}
+
+/* ============================================= */
+/* 6. HEADERS UNIFORMI */
+/* ============================================= */
+
+.uniform-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 30 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.uniform-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* ============================================= */
+/* 7. SPACING E LAYOUT */
+/* ============================================= */
+
+.main-content {
+    padding-top: 6rem !important;
+    padding-bottom: 8rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/* Assicura che il body abbia spazio per il footer */
+body {
+    padding-bottom: 5rem;
+}
+
+/* ============================================= */
+/* 8. ANIMAZIONI E TRANSIZIONI */
+/* ============================================= */
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(229, 62, 62, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(229, 62, 62, 0.8); }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px) !important;
+    transition: all 0.3s ease !important;
+}
+
+.hover-scale:hover {
+    transform: scale(1.02) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* ============================================= */
+/* 9. ICONE E GRADIENTS */
+/* ============================================= */
+
+.icon-gradient-blue {
+    background: linear-gradient(135deg, #00BFFF, #0066CC);
+}
+
+.icon-gradient-purple {
+    background: linear-gradient(135deg, #8E008C, #6A0080);
+}
+
+.icon-gradient-green {
+    background: linear-gradient(135deg, #10B981, #059669);
+}
+
+.bg-primary-important {
+    background-color: #2400C1 !important;
+}
+
+.bg-secondary-important {
+    background-color: #8E008C !important;
+}
+
+/* ============================================= */
+/* 10. FLOATING BUTTONS */
+/* ============================================= */
+
+.floating-btn {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.floating-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================= */
+/* 11. LOADING E STATES */
+/* ============================================= */
+
+.loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.success {
+    border-color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.error {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.warning {
+    border-color: #f59e0b !important;
+    background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+/* ============================================= */
+/* 12. SCROLLBAR PERSONALIZZATA */
+/* ============================================= */
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================= */
+/* 13. RESPONSIVE DESIGN */
+/* ============================================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .footer-nav .container,
+    .footer-nav-container {
+        padding: 0.5rem 0 !important;
+    }
+    
+    .nav-item,
+    .footer-nav-item {
+        padding: 0.5rem !important;
+        min-width: 50px !important;
+    }
+    
+    .nav-item > span:first-child,
+    .footer-nav-icon,
+    .nav-item > .nav-icon {
+        font-size: 1.5rem !important;
+    }
+    
+    .nav-item > span:last-child,
+    .footer-nav-label,
+    .nav-item > .nav-label {
+        font-size: 0.7rem !important;
+    }
+    
+    .main-content {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    
+    .hero-gradient {
+        min-height: auto;
+        padding: 1rem;
+    }
+    
+    .feature-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .nav-item,
+    .footer-nav-item {
+        padding: 0.375rem !important;
+        min-width: 45px !important;
+    }
+    
+    .nav-item > span:first-child,
+    .footer-nav-icon,
+    .nav-item > .nav-icon {
+        font-size: 1.25rem !important;
+    }
+    
+    .nav-item > span:last-child,
+    .footer-nav-label,
+    .nav-item > .nav-label {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================= */
+/* 14. COMPONENTI SPECIALI */
+/* ============================================= */
+
+/* Calendar styles per turni.html */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    background: #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.calendar-day {
+    background: white;
+    padding: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: #f3f4f6;
+    transform: translateY(-2px);
+}
+
+.calendar-day.header {
+    background: linear-gradient(135deg, #2400C1, #8E008C);
+    color: white;
+    font-weight: bold;
+    cursor: default;
+    min-height: 45px;
+}
+
+.calendar-day.header:hover {
+    transform: none;
+}
+
+/* Turni colors */
+.calendar-day.turno-mattina { 
+    background: #fef3c7; 
+    color: #92400e;
+    border-left: 3px solid #f59e0b;
+}
+
+.calendar-day.turno-pomeriggio { 
+    background: #fed7aa; 
+    color: #9a3412;
+    border-left: 3px solid #ea580c;
+}
+
+.calendar-day.turno-sera { 
+    background: #fca5a5; 
+    color: #991b1b;
+    border-left: 3px solid #dc2626;
+}
+
+.calendar-day.turno-notte { 
+    background: #c7d2fe; 
+    color: #3730a3;
+    border-left: 3px solid #4f46e5;
+}
+
+.calendar-day.licenza { 
+    background: #e0e7ff; 
+    color: #3730a3;
+    border-left: 3px solid #6366f1;
+}
+
+.calendar-day.oggi {
+    background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+    border-left: 3px solid #ffffff !important;
+}
+
+/* ============================================= */
+/* 15. PRINT STYLES */
+/* ============================================= */
+
+@media print {
+    .footer-nav,
+    .uniform-header,
+    .floating-btn {
+        display: none !important;
+    }
+    
+    .main-content {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+    
+    .hero-gradient {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .hero-gradient::before {
+        display: none !important;
+    }
+}
