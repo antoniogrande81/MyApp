@@ -3,34 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout in corso...</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#2400C1', secondary: '#8E008C',
-              textDark: '#1C1C1E',
-            },
-            backgroundImage: { 'hero': "linear-gradient(135deg, #2400C1, #8E008C)" },
-            fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] },
-          }
-        }
-      }
-    </script>
-    <title>Logout | MyApp</title>
-    <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#2400C1">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body class="font-sans">
-    <main class="bg-hero min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8 text-center">
-            <h1 class="text-2xl font-bold text-primary mb-4">Disconnessione in Corso</h1>
-            <p class="text-gray-600 mb-6">Attendi un momento, stiamo terminando la tua sessione in modo sicuro.</p>
-            <div class="border-gray-300 h-12 w-12 animate-spin rounded-full border-4 border-t-primary mx-auto"></div>
+    </head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Disconnessione in Corso...</h2>
+
+        <p class="text-gray-600 mb-6">
+            Attendi un momento, stai per essere reindirizzato alla pagina di accesso.
+        </p>
+
+        <div class="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
+
+        <div class="mt-6">
+            <a href="/index.html" class="text-sm text-blue-600 hover:underline">
+                Se non vieni reindirizzato, clicca qui.
+            </a>
         </div>
-    </main>
-    <script src="../scripts/main.js"></script>
+    </div>
+
+    <script>
+        // Funzione che si auto-esegue all'apertura della pagina
+        (function() {
+            console.log('Avvio procedura di logout...');
+
+            // --- Logica di Logout ---
+            // Rimuove i dati dell'utente salvati nel browser.
+            // Scegli la riga che corrisponde a come hai salvato i dati di sessione.
+            
+            // Se usi localStorage per un token o dati utente:
+            localStorage.removeItem('user_token'); // Sostituisci 'user_token' con il nome della tua chiave
+            // Oppure, per cancellare tutto il localStorage (più drastico):
+            // localStorage.clear();
+
+            // Se usi sessionStorage:
+            // sessionStorage.clear();
+
+            console.log('Dati di sessione rimossi.');
+
+            // --- Reindirizzamento alla Pagina di Accesso ---
+            // Attende 2 secondi (2000 millisecondi) prima di reindirizzare.
+            // Questo dà il tempo all'utente di leggere il messaggio.
+            setTimeout(function() {
+                // Sostituisci '/index.html' con la pagina di login, se diversa.
+                // Usare '/' reindirizza alla pagina principale.
+                window.location.href = '/index.html'; 
+            }, 2000); 
+
+        })();
+    </script>
+
 </body>
 </html>
