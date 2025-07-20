@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Mia Tessera | MyApp</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/custom.css">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', secondary: '#8E008C', accent: '#00BFFF',
+              textDark: '#1C1C1E', backgroundLight: '#F4F4F8', white: '#FFFFFF',
+              danger: '#DC2626',
+            },
+            backgroundImage: { 'hero': "linear-gradient(135deg, #2400C1, #8E008C)" },
+            fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] },
+          }
+        }
+      }
+    </script>
+    <style>
+        /* Stili specifici per questa pagina */
+        .glass-effect { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.18); }
+        .gradient-text { background: linear-gradient(135deg, #2400C1, #8E008C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="glass-effect fixed top-0 left-0 right-0 z-20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+             <h1 class="text-2xl font-bold gradient-text">La Mia Tessera</h1>
+            <a href="/public/logout.html" class="text-danger font-semibold">Logout</a>
+        </div>
+    </header>
+
+    <main id="card-container" class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-hero rounded-xl shadow-2xl p-6 text-white relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-white opacity-10 rounded-full"></div>
+            <div class="absolute bottom-4 left-4 w-20 h-20 bg-white opacity-10 rounded-full"></div>
+            <div class="flex justify-between items-start z-10 relative">
+                <div>
+                    <h2 class="text-2xl font-bold" id="tessera-nome">Caricamento...</h2>
+                </div>
+                <span class="font-bold text-lg">MyApp</span>
+            </div>
+            <div class="mt-8 flex justify-between items-end z-10 relative">
+                <div>
+                    <p class="text-xs uppercase">N. Tessera</p>
+                    <p class="text-lg font-mono" id="tessera-numero">...</p>
+                    <p class="text-xs uppercase mt-2">Scadenza</p>
+                    <p class="text-lg" id="tessera-scadenza">--/--/----</p>
+                </div>
+                <div class="bg-white p-1 rounded-md">
+                    <img id="tessera-qrcode" src="https://via.placeholder.com/100?text=QR" alt="QR Code Tessera" class="w-24 h-24">
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <nav class="footer-nav">
+        <div class="footer-nav-container">
+            <a href="home.html" class="footer-nav-item">
+                <span class="footer-nav-icon">🏠</span>
+                <span class="footer-nav-label">Home</span>
+            </a>
+            <a href="tessera.html" class="footer-nav-item active">
+                <span class="footer-nav-icon">💳</span>
+                <span class="footer-nav-label">Tessera</span>
+            </a>
+            <a href="servizi.html" class="footer-nav-item">
+                <span class="footer-nav-icon">🛡️</span>
+                <span class="footer-nav-label">Servizi</span>
+            </a>
+            <a href="profilo.html" class="footer-nav-item">
+                <span class="footer-nav-icon">👤</span>
+                <span class="footer-nav-label">Profilo</span>
+            </a>
+        </div>
+    </nav>
+    
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

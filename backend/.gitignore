@@ -1,0 +1,5 @@
+# Ignora le dipendenze di Node, non vanno mai caricate
+node_modules/
+
+# Ignora i file di ambiente che contengono le chiavi segrete
+.env

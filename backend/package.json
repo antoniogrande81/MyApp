@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Server proxy per il chatbot Virgilio (gestione sicura chiave OpenAI e autenticazione Supabase)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "openai",
+    "chatbot",
+    "supabase",
+    "proxy",
+    "backend"
+  ],
+  "author": "Il tuo nome",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "node-fetch": "^2.6.7"
+  }
+}

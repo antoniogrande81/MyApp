@@ -1,0 +1,32 @@
+{
+  "name": "MyApp",
+  "short_name": "MyApp",
+  "description": "L'app ufficiale del sindacato per i Carabinieri.",
+  "start_url": "/public/login.html", // Ho aggiornato questo a login.html come da discussioni precedenti. Se preferisci /public/index.html o /app/home.html, puoi cambiarlo.
+  "display": "standalone",
+  "background_color": "#F4F4F8",
+  "theme_color": "#2400C1",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/public/icons/icon-192x192.png", // Ho aggiunto '/public/' al percorso, assumendo che le icone siano dentro public/icons
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/public/icons/icon-512x512.png", // Ho aggiunto '/public/' al percorso, assumendo che le icone siano dentro public/icons
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/public/icons/icon-512x512.png", // Icona generica di backup, utile per compatibilità
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "lang": "it-IT", // Aggiunto per specificare la lingua dell'app
+  "categories": ["productivity", "social"] // Esempio di categorie, puoi adattarle
+}

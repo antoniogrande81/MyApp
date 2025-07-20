@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', secondary: '#8E008C',
+              textDark: '#1C1C1E',
+            },
+            backgroundImage: { 'hero': "linear-gradient(135deg, #2400C1, #8E008C)" },
+            fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] },
+          }
+        }
+      }
+    </script>
+    <title>Logout | MyApp</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="font-sans">
+    <main class="bg-hero min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8 text-center">
+            <h1 class="text-2xl font-bold text-primary mb-4">Disconnessione in Corso</h1>
+            <p class="text-gray-600 mb-6">Attendi un momento, stiamo terminando la tua sessione in modo sicuro.</p>
+            <div class="border-gray-300 h-12 w-12 animate-spin rounded-full border-4 border-t-primary mx-auto"></div>
+        </div>
+    </main>
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dirigente | MyApp</title>
+
+    <!-- Scripts e Librerie -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Personalizzato NUOVO -->
+    <link rel="stylesheet" href="../css/custom.css?v=2024">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <!-- Configurazione Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1',
+              secondary: '#8E008C',
+              accent: '#00BFFF',
+              textDark: '#1C1C1E',
+              backgroundLight: '#F4F4F8',
+              white: '#FFFFFF',
+              danger: '#DC2626',
+              success: '#10B981',
+              warning: '#F59E0B',
+            },
+            fontFamily: { 
+                sans: ['Inter', 'Segoe UI', 'Roboto', 'sans-serif'] 
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'scale-in': 'scaleIn 0.5s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+              slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+              scaleIn: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            },
+          }
+        }
+      }
+    </script>
+</head>
+
+<!-- BODY SPECIALE: Aurora background per dashboard dirigente -->
+<body class="aurora-bg font-sans text-textDark min-h-screen">
+
+    <!-- HEADER UNIFORME con titolo bianco -->
+    <header class="glass-effect uniform-header animate-fade-in">
+        <div class="uniform-container">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-white/20 to-white/40 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                        <span class="text-white font-black text-lg">📊</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white-important">Dashboard Dirigente</h1>
+                </div>
+                <a href="/public/logout.html" class="text-red-400 hover:text-red-300 font-semibold transition-colors px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content uniform-container space-y-8">
+        
+        <!-- WELCOME SECTION -->
+        <div class="text-white px-2 animate-slide-up">
+            <h2 class="text-4xl font-black mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                Benvenuto, Dirigente! 👋
+            </h2>
+            <p class="text-white/90 text-lg font-medium">Gestisci contenuti, moduli e funzioni riservate della tua associazione.</p>
+        </div>
+
+        <!-- FEEDBACK AREA -->
+        <div id="dashboardFeedback" class="hidden animate-scale-in"></div>
+        
+        <!-- STATISTICHE RAPIDE -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style="animation-delay: 0.2s;">
+            <div class="glass-card rounded-2xl p-6 text-center text-white">
+                <div class="text-3xl mb-2">📰</div>
+                <div class="text-2xl font-bold" id="statsNotizie">0</div>
+                <div class="text-white/80 text-sm">Notizie Pubblicate</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 text-center text-white">
+                <div class="text-3xl mb-2">🤝</div>
+                <div class="text-2xl font-bold" id="statsConvenzioni">0</div>
+                <div class="text-white/80 text-sm">Convenzioni Attive</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 text-center text-white">
+                <div class="text-3xl mb-2">👥</div>
+                <div class="text-2xl font-bold" id="statsUtenti">--</div>
+                <div class="text-white/80 text-sm">Utenti Attivi</div>
+            </div>
+        </div>
+        
+        <!-- SEZIONE GESTIONE CONTENUTI -->
+        <div class="glass-card rounded-3xl p-8 hover-lift animate-slide-up" style="animation-delay: 0.4s;">
+            <h3 class="font-black text-3xl mb-8 text-white text-center flex items-center justify-center">
+                <span class="text-4xl mr-4">⚡</span>
+                Gestione Contenuti App
+            </h3>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                
+                <!-- FORM NOTIZIE -->
+                <div class="glass-effect-strong rounded-2xl p-6 hover-scale">
+                    <h4 class="font-bold text-white mb-6 text-2xl flex items-center">
+                        <span class="text-3xl mr-3">📢</span> 
+                        <span class="gradient-text">Gestione Notizie</span>
+                    </h4>
+                    <form id="quickNotiziaForm" class="space-y-4">
+                        <input type="hidden" name="notizia_id" id="notizia_id">
+                        <input 
+                            type="text" 
+                            name="titolo" 
+                            placeholder="📝 Titolo della notizia..." 
+                            required 
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-transparent transition-all shadow-lg"
+                        >
+                        <textarea 
+                            name="contenuto" 
+                            placeholder="✍️ Scrivi il contenuto della notizia..." 
+                            rows="4" 
+                            required 
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 resize-none bg-white/95 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-transparent transition-all shadow-lg"
+                        ></textarea>
+                        <div class="grid grid-cols-2 gap-4">
+                            <select name="priorita" class="px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-lg">
+                                <option value="normale">📝 Normale</option>
+                                <option value="importante">⚠️ Importante</option>
+                                <option value="urgente">🚨 Urgente</option>
+                            </select>
+                            <select name="icona" class="px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-lg">
+                                <option value="📢">📢 Annuncio</option>
+                                <option value="💡">💡 Novità</option>
+                                <option value="💼">💼 Lavoro</option>
+                                <option value="📅">📅 Evento</option>
+                                <option value="🚨">🚨 Urgente</option>
+                                <option value="🎉">🎉 Celebrazione</option>
+                                <option value="🔔">🔔 Notifica</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-white text-sm font-semibold mb-2 block">📸 Carica Immagine (opzionale)</label>
+                            <input 
+                                type="file" 
+                                name="immagine_file" 
+                                accept="image/png, image/jpeg, image/gif, image/webp" 
+                                class="w-full text-sm text-white file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-accent/80 file:transition-all file:shadow-lg transition-all"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="notiziaSubmitButton" 
+                            class="w-full bg-gradient-to-r from-accent to-cyan-500 text-white font-bold py-4 rounded-xl hover:from-accent/90 hover:to-cyan-500/90 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                        >
+                            <span>📤</span>
+                            <span>Pubblica Notizia</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            id="cancelEditButton" 
+                            onclick="resetNotiziaForm()" 
+                            class="hidden w-full bg-gray-500/80 text-white font-bold py-3 rounded-xl hover:bg-gray-600 transition-all mt-2"
+                        >
+                            ❌ Annulla Modifica
+                        </button>
+                    </form>
+                    
+                    <!-- LISTA NOTIZIE RECENTI -->
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h5 class="font-bold text-white text-lg">📋 Notizie Recenti</h5>
+                            <button onclick="refreshNotizie()" class="text-white/80 hover:text-white transition-colors">🔄</button>
+                        </div>
+                        <div id="quickNotizieList" class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-2">
+                            <div class="glass-effect rounded-lg p-4">
+                                <div class="loading-shimmer h-4 rounded mb-2"></div>
+                                <div class="loading-shimmer h-3 rounded w-3/4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM CONVENZIONI -->
+                <div class="glass-effect-strong rounded-2xl p-6 hover-scale">
+                    <h4 class="font-bold text-white mb-6 text-2xl flex items-center">
+                        <span class="text-3xl mr-3">🤝</span> 
+                        <span class="gradient-text">Gestione Convenzioni</span>
+                    </h4>
+                    <form id="quickConvenzioneForm" class="space-y-4">
+                        <input type="hidden" name="convenzione_id" id="convenzione_id">
+                        <input 
+                            type="text" 
+                            name="nome_partner" 
+                            placeholder="🏢 Nome del partner..." 
+                            required 
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-transparent transition-all shadow-lg"
+                        >
+                        <textarea 
+                            name="descrizione" 
+                            placeholder="📝 Descrizione della convenzione..." 
+                            rows="3" 
+                            required
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 resize-none bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-transparent transition-all shadow-lg"
+                        ></textarea>
+                        <div class="grid grid-cols-2 gap-4">
+                            <select name="categoria" class="px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary transition-all shadow-lg">
+                                <option value="assicurazioni">🛡️ Assicurazioni</option>
+                                <option value="automotive">🚗 Automotive</option>
+                                <option value="tecnologia">💻 Tecnologia</option>
+                                <option value="viaggi">✈️ Viaggi</option>
+                                <option value="wellness">💆 Wellness</option>
+                                <option value="shopping">🛍️ Shopping</option>
+                                <option value="servizi">🔧 Servizi</option>
+                                <option value="casa">🏠 Casa e Giardino</option>
+                                <option value="alimentare">🍕 Alimentare</option>
+                                <option value="altro">📦 Altro</option>
+                            </select>
+                            <input 
+                                type="number" 
+                                name="sconto_percentuale" 
+                                placeholder="💯 % sconto" 
+                                min="0" 
+                                max="100" 
+                                class="px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary transition-all shadow-lg"
+                            >
+                        </div>
+                        <input 
+                            type="url" 
+                            name="link_esterno" 
+                            placeholder="🔗 Link al sito del partner (opzionale)" 
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary transition-all shadow-lg"
+                        >
+                        <input 
+                            type="url" 
+                            name="logo_url" 
+                            placeholder="🖼️ URL del logo del partner (opzionale)" 
+                            class="w-full px-4 py-3 rounded-xl text-gray-800 bg-white/95 focus:outline-none focus:ring-2 focus:ring-secondary transition-all shadow-lg"
+                        >
+                        <div>
+                            <label class="text-white text-sm font-semibold mb-2 block">📸 Carica Logo (opzionale)</label>
+                            <input 
+                                type="file" 
+                                name="logo_file" 
+                                accept="image/png, image/jpeg, image/gif, image/webp, image/svg+xml" 
+                                class="w-full text-sm text-white file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-secondary file:text-white hover:file:bg-secondary/80 file:transition-all file:shadow-lg transition-all"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="convenzioneSubmitButton"
+                            class="w-full bg-gradient-to-r from-secondary to-purple-600 text-white font-bold py-4 rounded-xl hover:from-secondary/90 hover:to-purple-600/90 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                        >
+                            <span>➕</span>
+                            <span>Aggiungi Convenzione</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            id="cancelEditConvenzioneButton" 
+                            onclick="resetConvenzioneForm()" 
+                            class="hidden w-full bg-gray-500/80 text-white font-bold py-3 rounded-xl hover:bg-gray-600 transition-all mt-2"
+                        >
+                            ❌ Annulla Modifica
+                        </button>
+                    </form>
+                    
+                    <!-- LISTA CONVENZIONI RECENTI -->
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h5 class="font-bold text-white text-lg">🏪 Convenzioni Recenti</h5>
+                            <button onclick="refreshConvenzioni()" class="text-white/80 hover:text-white transition-colors">🔄</button>
+                        </div>
+                        <div id="quickConvenzioniList" class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-2">
+                            <div class="glass-effect rounded-lg p-4">
+                                <div class="loading-shimmer h-4 rounded mb-2"></div>
+                                <div class="loading-shimmer h-3 rounded w-2/3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SEZIONE LINK RAPIDI -->
+        <div class="glass-card rounded-3xl p-8 hover-lift animate-slide-up" style="animation-delay: 0.6s;">
+            <h3 class="font-black text-3xl mb-8 text-white text-center flex items-center justify-center">
+                <span class="text-4xl mr-4">🚀</span>
+                Link Rapidi e Modulistica
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://eu.jotform.com/assign/243262801203343/243264883834062" target="_blank" rel="noopener noreferrer" class="feature-card bg-white p-6 rounded-2xl shadow-xl border-0 flex flex-col items-center justify-center text-center group">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">📝</span>
+                    <h3 class="font-bold text-lg text-primary-important mb-2">Richiedi Permesso</h3>
+                    <p class="text-sm text-gray-600">Modulo permesso sindacale</p>
+                </a>
+                <a href="https://form.jotform.com/243226223182044" target="_blank" rel="noopener noreferrer" class="feature-card bg-white p-6 rounded-2xl shadow-xl border-0 flex flex-col items-center justify-center text-center group">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">💸</span>
+                    <h3 class="font-bold text-lg text-primary-important mb-2">Richiedi Rimborso</h3>
+                    <p class="text-sm text-gray-600">Modulo rimborso sindacale</p>
+                </a>
+                <a href="https://eu.jotform.com/tables/243226223182044?st=UGpyTWZFR0lXeUlKclRSWFpURFNEWEk5TklTZ2RSWithczc5UzJ3ajVKVDRrenVEWlIxdzJaVDduV1I0ZjVVM21BM1NzQlNmOEZ2cFNxQ3hIczlkK2JWL2w2a0grU1FSa0NrVGl2WmZCcGNsTlkvZlZ1V2FKUUNkdUdJL0d1YXA=" target="_blank" rel="noopener noreferrer" class="feature-card bg-white p-6 rounded-2xl shadow-xl border-0 flex flex-col items-center justify-center text-center group">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">📊</span>
+                    <h3 class="font-bold text-lg text-primary-important mb-2">Tabella Rimborsi</h3>
+                    <p class="text-sm text-gray-600">Dati aggregati rimborsi</p>
+                </a>
+                <a href="https://mega.nz/folder/figRhbTT#dw0ZS1lb6sv8l-CHVfNSTA" target="_blank" rel="noopener noreferrer" class="feature-card bg-white p-6 rounded-2xl shadow-xl border-0 flex flex-col items-center justify-center text-center group">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">📚</span>
+                    <h3 class="font-bold text-lg text-primary-important mb-2">Database</h3>
+                    <p class="text-sm text-gray-600">Archivio pubblicazioni</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER NAVIGATION UNIFORME -->
+    <nav class="footer-nav">
+        <div class="footer-nav-container">
+            <a href="home.html" class="footer-nav-item" id="nav-home">
+                <span class="footer-nav-icon">🏠</span>
+                <span class="footer-nav-label">Home</span>
+            </a>
+            <a href="tessera.html" class="footer-nav-item" id="nav-tessera">
+                <span class="footer-nav-icon">💳</span>
+                <span class="footer-nav-label">Tessera</span>
+            </a>
+            <a href="servizi.html" class="footer-nav-item active" id="nav-servizi">
+                <span class="footer-nav-icon">🛡️</span>
+                <span class="footer-nav-label">Servizi</span>
+            </a>
+            <a href="profilo.html" class="footer-nav-item" id="nav-profilo">
+                <span class="footer-nav-icon">👤</span>
+                <span class="footer-nav-label">Profilo</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/main.js"></script>
+    
+    <!-- Script per la Dashboard -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Inizializzazione Dashboard Dirigente...');
+            
+            // Attiva tab corrente
+            document.getElementById('nav-servizi').classList.add('active');
+            
+            // Le funzioni di caricamento sono già gestite da main.js
+            // Non serve duplicare il codice
+        });
+
+        // Funzioni per aggiornare statistiche dal database (usa le funzioni di main.js)
+        async function updateStatsFromDatabase() {
+            try {
+                // Usa le credenziali già configurate in main.js
+                const { count: notizieCount } = await supabase
+                    .from('notizie')
+                    .select('*', { count: 'exact', head: true });
+
+                const { count: convenzioniCount } = await supabase
+                    .from('convenzioni')
+                    .select('*', { count: 'exact', head: true });
+
+                document.getElementById('statsNotizie').textContent = notizieCount || 0;
+                document.getElementById('statsConvenzioni').textContent = convenzioniCount || 0;
+                document.getElementById('statsUtenti').textContent = '247'; // Simulated
+                
+            } catch (error) {
+                console.error('Errore aggiornando statistiche:', error);
+            }
+        }
+
+        // Refresh functions che usano le funzioni già esistenti in main.js
+        function refreshNotizie() {
+            if (typeof loadQuickNotizie === 'function') {
+                loadQuickNotizie();
+            }
+            updateStatsFromDatabase();
+        }
+
+        function refreshConvenzioni() {
+            if (typeof loadQuickConvenzioni === 'function') {
+                loadQuickConvenzioni();
+            }
+            updateStatsFromDatabase();
+        }
+
+        // Inizializza statistiche al caricamento
+        setTimeout(() => {
+            updateStatsFromDatabase();
+        }, 1000);
+
+        // Export functions for global access
+        window.refreshNotizie = refreshNotizie;
+        window.refreshConvenzioni = refreshConvenzioni;
+    </script>
+</body>
+</html>

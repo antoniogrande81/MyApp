@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', secondary: '#8E008C', accent: '#00BFFF',
+              textDark: '#1C1C1E', backgroundLight: '#F4F4F8', white: '#FFFFFF',
+              danger: '#DC2626',
+            },
+            backgroundImage: { 'hero': "linear-gradient(135deg, #2400C1, #8E008C)" },
+            fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] },
+          }
+        }
+      }
+    </script>
+    <title>MyApp – Sindacato Carabinieri | Home</title>
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <meta name="theme-color" content="#2400C1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-10">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-primary">MyApp</a>
+            <a href="login.html" class="bg-primary text-white font-bold py-2 px-4 rounded-md hover:bg-opacity-90">Area Riservata</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="bg-hero text-white text-center py-20 md:py-32">
+            <h1 class="text-4xl md:text-5xl font-bold">Il tuo sindacato, sempre con te.</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto">Tutti i servizi, le convenzioni e il supporto di cui hai bisogno, a portata di tap.</p>
+            <a href="login.html" class="mt-8 inline-block bg-accent text-primary font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-opacity">Accedi o Registrati</a>
+        </section>
+        
+        <section class="py-16">
+            <h2 class="text-3xl font-bold text-center text-textDark mb-12">I Nostri Vantaggi</h2>
+            <div class="container mx-auto grid md:grid-cols-3 gap-8 px-4">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-xl font-bold text-primary mb-2">Servizi Dedicati</h3>
+                    <p>Consulenza legale, supporto amministrativo e Strumenti. Tutto in un unico posto.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-xl font-bold text-primary mb-2">Convenzioni Esclusive</h3>
+                    <p>Sconti e offerte speciali riservate ai nostri iscritti presso centinaia di partner.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-xl font-bold text-primary mb-2">Supporto Diretto</h3>
+                    <p>Contatta i tuoi dirigenti sindacali in modo semplice e veloce per ogni necessità.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

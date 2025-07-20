@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', secondary: '#8E008C', accent: '#00BFFF',
+              textDark: '#1C1C1E', backgroundLight: '#F4F4F8', white: '#FFFFFF',
+              danger: '#DC2626',
+            },
+            backgroundImage: { 'hero': "linear-gradient(135deg, #2400C1, #8E008C)" },
+            fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] },
+          }
+        }
+      }
+    </script>
+    <title>Pannello Admin | MyApp</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-primary">Pannello Admin</h1>
+            <a href="/public/logout.html" class="text-danger font-semibold">Logout</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 pt-24 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="#" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center">
+                <h3 class="text-xl font-bold text-primary">Gestione Utenti</h3>
+                <p class="mt-2 text-gray-600">Visualizza, modifica e gestisci gli iscritti.</p>
+            </a>
+            <a href="#" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center">
+                <h3 class="text-xl font-bold text-primary">Gestione Convenzioni</h3>
+                <p class="mt-2 text-gray-600">Aggiungi, modifica o disattiva le convenzioni.</p>
+            </a>
+            <a href="#" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center">
+                <h3 class="text-xl font-bold text-primary">Invia Notifica Push</h3>
+                <p class="mt-2 text-gray-600">Manda comunicazioni a tutti gli iscritti.</p>
+            </a>
+            <a href="#" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center">
+                <h3 class="text-xl font-bold text-primary">Gestione Dirigenti</h3>
+                <p class="mt-2 text-gray-600">Aggiorna l'elenco e i contatti dei dirigenti.</p>
+            </a>
+            <a href="#" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center">
+                <h3 class="text-xl font-bold text-primary">Statistiche</h3>
+                <p class="mt-2 text-gray-600">Visualizza i dati di utilizzo dell'app.</p>
+            </a>
+        </div>
+    </main>
+    
+    <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_5px_rgba(0,0,0,0.1)] z-10">
+        <p class="text-center p-4 text-gray-500">Sei in modalità Amministratore</p>
+    </nav>
+    
+    <script src="../scripts/main.js"></script>
+<nav class="footer-nav">
+    <div class="footer-nav-container">
+        <a href="home.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🏠</span>
+            <span class="footer-nav-label">Home</span>
+        </a>
+        <a href="tessera.html" class="footer-nav-item">
+            <span class="footer-nav-icon">💳</span>
+            <span class="footer-nav-label">Tessera</span>
+        </a>
+        <a href="servizi.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🛠️</span>
+            <span class="footer-nav-label">Servizi</span>
+        </a>
+        <a href="profilo.html" class="footer-nav-item">
+            <span class="footer-nav-icon">👤</span>
+            <span class="footer-nav-label">Profilo</span>
+        </a>
+    </div>
+</nav>
+    </nav>
+</body>
+</html>

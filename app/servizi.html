@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servizi e Tutele | MyApp</title>
+
+    <!-- Scripts e Librerie -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Personalizzato -->
+    <link rel="stylesheet" href="../css/custom.css?v=2024">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <!-- Configurazione Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1',
+              secondary: '#8E008C',
+              accent: '#00BFFF',
+              textDark: '#1C1C1E',
+              backgroundLight: '#F8FAFC',
+              white: '#FFFFFF',
+              danger: '#DC2626',
+              success: '#10B981',
+              warning: '#F59E0B',
+            },
+            fontFamily: { 
+                sans: ['Inter', 'Segoe UI', 'Roboto', 'sans-serif'] 
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'scale-in': 'scaleIn 0.5s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+              slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+              scaleIn: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            },
+          }
+        }
+      }
+    </script>
+</head>
+
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <!-- HEADER UNIFORME -->
+    <header class="glass-header uniform-header animate-fade-in">
+        <div class="uniform-container">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-primary-important section-title">Servizi e Tutele</h1>
+                <a href="/public/logout.html" class="text-red-500 hover:text-red-600 font-semibold transition-colors">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content uniform-container space-y-8">
+        
+        <!-- HERO SECTION -->
+        <div class="content-section rounded-3xl p-8 text-center animate-scale-in" style="animation-delay: 0.2s;">
+            <div class="flex justify-center mb-6">
+                <div class="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-3xl flex items-center justify-center shadow-glow">
+                    <span class="text-white text-4xl">🛡️</span>
+                </div>
+            </div>
+            <h2 class="text-4xl font-black mb-4 gradient-text">BestBadge</h2>
+            <p class="text-xl text-gray-700 mb-6 font-medium max-w-4xl mx-auto">
+                Tutela legale, fiscale e di patronato specializzata, in stretta sinergia con la 
+                <strong>Fondazione ASSOSAFE</strong>, per garantire sicurezza e tutele a 360°.
+            </p>
+            
+            <!-- NOTA IMPORTANTE -->
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg mb-6 text-left max-w-4xl mx-auto">
+                <div class="flex items-start">
+                    <div class="text-3xl mr-4">ℹ️</div>
+                    <div>
+                        <h4 class="font-bold text-blue-800 text-lg mb-2">Nota Importante</h4>
+                        <p class="text-blue-700">
+                            <strong>BestBadge è una società di servizi e non una compagnia assicurativa.</strong> 
+                            I nostri servizi di tutela legale sono erogati attraverso professionisti qualificati 
+                            e strutture specializzate, garantendo assistenza diretta e personalizzata per ogni esigenza.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CERTIFICAZIONI -->
+            <div class="flex justify-center space-x-6 mb-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-green-600 text-2xl">✓</span>
+                    </div>
+                    <div class="text-sm font-semibold text-gray-700">ISO 9001:2015</div>
+                    <div class="text-xs text-gray-500">Qualità</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-green-600 text-2xl">🌱</span>
+                    </div>
+                    <div class="text-sm font-semibold text-gray-700">ISO 14001:2015</div>
+                    <div class="text-xs text-gray-500">Ambiente</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-green-600 text-2xl">🛡️</span>
+                    </div>
+                    <div class="text-sm font-semibold text-gray-700">ISO 45001:2018</div>
+                    <div class="text-xs text-gray-500">Sicurezza</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHI SIAMO E A CHI CI RIVOLGIAMO -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-up" style="animation-delay: 0.4s;">
+            <div class="content-section rounded-2xl p-8">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 section-title">🏢 Chi Siamo</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>BestBadge</strong> fornisce assistenza qualificata in ambito <strong>legale</strong>, 
+                    <strong>fiscale</strong> e di <strong>patronato</strong>, con particolare attenzione alla difesa 
+                    dei diritti dei lavoratori, delle imprese e dei professionisti.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    Grazie alla partnership con <strong>Fondazione ASSOSAFE</strong>, garantiamo una consulenza 
+                    globale che copre sia gli aspetti di sicurezza sul lavoro sia quelli di carattere legale, 
+                    civile e penale.
+                </p>
+            </div>
+            
+            <div class="content-section rounded-2xl p-8">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 section-title">👥 A Chi Ci Rivolgiamo</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-blue-600">🏢</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800">Aziende e Professionisti</div>
+                            <div class="text-sm text-gray-600">Assistenza legale, fiscale e consulenza societaria</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-green-600">👨‍💼</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800">Lavoratori Dipendenti e Autonomi</div>
+                            <div class="text-sm text-gray-600">Supporto in controversie e vertenze sindacali</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-purple-600">👨‍👩‍👧‍👦</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800">Famiglie e Privati</div>
+                            <div class="text-sm text-gray-600">Tutela civile, penale, fiscale e assicurativa</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AREE DI INTERVENTO -->
+        <div class="content-section rounded-3xl p-8 animate-slide-up" style="animation-delay: 0.6s;">
+            <h3 class="text-3xl font-black text-gray-800 mb-8 text-center">⚖️ Aree di Intervento</h3>
+            
+            <!-- AREA LEGALE CIVILE -->
+            <div class="mb-12">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6 mb-6">
+                    <h4 class="text-2xl font-bold text-blue-800 mb-4 flex items-center">
+                        <span class="text-3xl mr-3">⚖️</span>
+                        Area Legale Civile
+                    </h4>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Diritto delle Società -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-blue-600 text-2xl">🏢</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Diritto delle Società</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Fusioni e scissioni</li>
+                            <li>• Pubblicità ingannevole</li>
+                            <li>• Contrattualistica internazionale</li>
+                            <li>• Gestione patrimoni</li>
+                            <li>• Diritto societario</li>
+                        </ul>
+                    </div>
+
+                    <!-- Diritto delle Proprietà -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-green-600 text-2xl">🏠</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Diritto delle Proprietà</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Affari immobiliari</li>
+                            <li>• Contratti di locazione</li>
+                            <li>• Questioni condominiali</li>
+                            <li>• Usucapione e divisioni</li>
+                            <li>• Morosità e sfratti</li>
+                        </ul>
+                    </div>
+
+                    <!-- Diritto del Lavoro -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-orange-600 text-2xl">👨‍💼</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Diritto del Lavoro</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Vertenze sindacali</li>
+                            <li>• Procedimenti disciplinari</li>
+                            <li>• Infortuni sul lavoro</li>
+                            <li>• Malattie professionali</li>
+                            <li>• Reati ambientali</li>
+                        </ul>
+                    </div>
+
+                    <!-- Diritto di Famiglia -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-pink-600 text-2xl">👨‍👩‍👧‍👦</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Diritto di Famiglia</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Separazioni e divorzi</li>
+                            <li>• Alimenti e minori</li>
+                            <li>• Adozioni</li>
+                            <li>• Riconoscimenti</li>
+                        </ul>
+                    </div>
+
+                    <!-- Assicurazioni -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-purple-600 text-2xl">🚗</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Assicurazioni</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• RCA e sinistri</li>
+                            <li>• Gestione multe</li>
+                            <li>• Guida in stato di ebrezza</li>
+                            <li>• Trattative assicurative</li>
+                        </ul>
+                    </div>
+
+                    <!-- Bancario -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-cyan-600 text-2xl">🏦</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Bancario</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Contratti bancari</li>
+                            <li>• Contestazioni addebiti</li>
+                            <li>• Interessi passivi</li>
+                            <li>• Accesso al credito</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AREA PENALE -->
+            <div class="mb-12">
+                <div class="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 mb-6">
+                    <h4 class="text-2xl font-bold text-red-800 mb-4 flex items-center">
+                        <span class="text-3xl mr-3">🚨</span>
+                        Area Penale
+                    </h4>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Penale Militare -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-red-600 text-2xl">⚔️</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Penale Militare</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Procedimenti penali militari</li>
+                            <li>• Operatività entro limite massimale</li>
+                            <li>• Copertura anche in caso di dolo</li>
+                        </ul>
+                    </div>
+
+                    <!-- Reati Edilizi -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-yellow-600 text-2xl">🏗️</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Reati Edilizi</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Violazioni urbanistiche</li>
+                            <li>• Danneggiamenti</li>
+                            <li>• Abusi edilizi</li>
+                        </ul>
+                    </div>
+
+                    <!-- Reati Economici -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-indigo-600 text-2xl">💰</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Reati Economici</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Truffe ed estorsioni</li>
+                            <li>• Falsità in atti</li>
+                            <li>• Reati societari</li>
+                        </ul>
+                    </div>
+
+                    <!-- Reati Ambientali -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-green-600 text-2xl">🌱</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Reati Ambientali</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Inquinamento ambientale</li>
+                            <li>• Contaminazione radioattiva</li>
+                            <li>• Violazioni normative</li>
+                        </ul>
+                    </div>
+
+                    <!-- Reati contro la Famiglia -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-pink-600 text-2xl">👶</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Reati contro la Famiglia</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Violazione obblighi alimentari</li>
+                            <li>• Reati sui minori</li>
+                            <li>• Bullismo e maltrattamenti</li>
+                        </ul>
+                    </div>
+
+                    <!-- Materie Amministrative -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-gray-600 text-2xl">📋</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Amministrativo</h5>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Domande di trasferimento</li>
+                            <li>• Ricorsi gerarchici</li>
+                            <li>• Ricorsi al TAR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AREA FISCALE E PATRONATO -->
+            <div>
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-2xl p-6 mb-6">
+                    <h4 class="text-2xl font-bold text-green-800 mb-4 flex items-center">
+                        <span class="text-3xl mr-3">📊</span>
+                        Area Fiscale e Patronato (F.I.TE.S.C.)
+                    </h4>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Assistenza Fiscale -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-green-600 text-2xl">💰</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Assistenza Fiscale</h5>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Dichiarazioni dei redditi (730, Redditi PF)</li>
+                            <li>• Calcolo e versamento imposte</li>
+                            <li>• Modelli ISEE, RED</li>
+                            <li>• Detrazioni e agevolazioni fiscali</li>
+                            <li>• Bonus energetici e ristrutturazioni</li>
+                        </ul>
+                    </div>
+
+                    <!-- Assistenza di Patronato -->
+                    <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <span class="text-blue-600 text-2xl">🤝</span>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-3">Assistenza di Patronato</h5>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Pratiche previdenziali (pensioni)</li>
+                            <li>• Assegni familiari e disoccupazione</li>
+                            <li>• Invalidità civile e accompagnamento</li>
+                            <li>• NASpI e Reddito di Cittadinanza</li>
+                            <li>• Infortuni sul lavoro</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONDIZIONI DI TUTELA -->
+        <div class="content-section rounded-3xl p-8 animate-slide-up" style="animation-delay: 0.8s;">
+            <h3 class="text-3xl font-black text-gray-800 mb-8 text-center">💎 Condizioni di Tutela</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Plafond -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">💎</div>
+                    <h4 class="font-bold text-blue-800 text-xl mb-2">Plafond Limite</h4>
+                    <div class="text-3xl font-black text-blue-600 mb-2">€30.000</div>
+                    <p class="text-sm text-blue-700">Oltre accessori secondo tariffe professionali</p>
+                </div>
+
+                <!-- Copertura Famiglia -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">👨‍👩‍👧‍👦</div>
+                    <h4 class="font-bold text-green-800 text-xl mb-2">Nucleo Familiare</h4>
+                    <p class="text-green-700 font-semibold mb-2">Copertura Estesa</p>
+                    <p class="text-sm text-green-700">Al nucleo familiare convivente dell'iscritto</p>
+                </div>
+
+                <!-- Copertura 24/7 -->
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🕐</div>
+                    <h4 class="font-bold text-purple-800 text-xl mb-2">Copertura 24/7</h4>
+                    <p class="text-purple-700 font-semibold mb-2">Anche Fuori Servizio</p>
+                    <p class="text-sm text-purple-700">Tutela garantita in ogni momento</p>
+                </div>
+
+                <!-- Territorio Nazionale -->
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🇮🇹</div>
+                    <h4 class="font-bold text-orange-800 text-xl mb-2">Territorio Nazionale</h4>
+                    <p class="text-orange-700 font-semibold mb-2">Copertura Completa</p>
+                    <p class="text-sm text-orange-700">Legali competenti in tutta Italia</p>
+                </div>
+
+                <!-- Tempi di Risposta -->
+                <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h4 class="font-bold text-cyan-800 text-xl mb-2">Tempi di Risposta</h4>
+                    <p class="text-cyan-700 font-semibold mb-2">48-72 Ore</p>
+                    <p class="text-sm text-cyan-700">Per qualsiasi richiesta o parere</p>
+                </div>
+
+                <!-- Tutela Antisindacale -->
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h4 class="font-bold text-red-800 text-xl mb-2">Tutela Antisindacale</h4>
+                    <p class="text-red-700 font-semibold mb-2">Inclusa</p>
+                    <p class="text-sm text-red-700">Previa valutazione di fattibilità</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIGITALIZZAZIONE -->
+        <div class="content-section rounded-3xl p-8 animate-slide-up" style="animation-delay: 1.0s;">
+            <h3 class="text-3xl font-black text-gray-800 mb-8 text-center">🚀 Digitalizzazione dei Servizi</h3>
+            
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 text-center">
+                <div class="text-6xl mb-6">💻</div>
+                <h4 class="text-2xl font-bold text-gray-800 mb-4">Area di Accesso Riservata</h4>
+                <p class="text-gray-700 text-lg mb-6 max-w-3xl mx-auto">
+                    Tutti i servizi sono erogati attraverso un'<strong>area di accesso riservata</strong>, 
+                    sviluppata e gestita dalla nostra società, fruibile mediante <strong>Access Key identificativo</strong>.
+                </p>
+                <div class="bg-white rounded-xl p-6 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 text-xl">🔑</span>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-800">+</div>
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-green-600 text-xl">📱</span>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-800">=</div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span class="text-purple-600 text-xl">✨</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        <strong>Integrazione completa</strong> all'interno del sito e dell'applicazione ufficiale del 
+                        <strong>Nuovo Sindacato Carabinieri (NSC)</strong>, per un'esperienza d'uso semplice e immediata.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTATTI E INFORMAZIONI -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-up" style="animation-delay: 1.2s;">
+            <!-- Contatti -->
+            <div class="content-section rounded-2xl p-8">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 section-title">📞 Contatti</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <span class="text-blue-600 text-xl">📧</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800">Email</div>
+                            <a href="mailto:info@assosafe.org" class="text-blue-600 hover:text-blue-700 transition-colors">
+                                info@assosafe.org
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                            <span class="text-green-600 text-xl">🌐</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800">Sito Web</div>
+                            <a href="https://www.bestbadge.org/" target="_blank" rel="noopener noreferrer" 
+                               class="text-green-600 hover:text-green-700 transition-colors">
+                                www.bestbadge.org
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esclusività -->
+            <div class="content-section rounded-2xl p-8">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 section-title">🎯 Esclusività del Servizio</h3>
+                <div class="space-y-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="font-semibold text-blue-800 mb-2">Servizio Esclusivo</div>
+                        <p class="text-blue-700 text-sm">
+                            Dedicato al <strong>Nuovo Sindacato Carabinieri</strong> come sindacato dell'Arma
+                        </p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <div class="font-semibold text-green-800 mb-2">Futuri Sviluppi</div>
+                        <p class="text-green-700 text-sm">
+                            Possibile estensione ad altri sindacati di polizia e militari, 
+                            nonché a società civili e private
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TARIFFE SPECIALI -->
+        <div class="content-section rounded-3xl p-8 animate-slide-up" style="animation-delay: 1.4s;">
+            <h3 class="text-3xl font-black text-gray-800 mb-8 text-center">💰 Condizioni Economiche Speciali</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Tariffe Risarcitorie -->
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">⚖️</div>
+                    <h4 class="font-bold text-yellow-800 text-xl mb-2">Risarcimenti Assicurativi</h4>
+                    <div class="text-3xl font-black text-yellow-600 mb-2">10%</div>
+                    <p class="text-sm text-yellow-700">Sulla somma effettivamente risarcita (al netto delle spese)</p>
+                </div>
+
+                <!-- Costi Fissi -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">💼</div>
+                    <h4 class="font-bold text-blue-800 text-xl mb-2">Costi Fissi</h4>
+                    <p class="text-blue-700 font-semibold mb-2">Solo per Contenzioso</p>
+                    <p class="text-sm text-blue-700">A carico dell'associato per l'instaurazione del procedimento</p>
+                </div>
+
+                <!-- Promozione -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🎁</div>
+                    <h4 class="font-bold text-green-800 text-xl mb-2">Promozione Lancio</h4>
+                    <p class="text-green-700 font-semibold mb-2">2 Mesi Gratuiti</p>
+                    <p class="text-sm text-green-700">Dal 1° marzo 2025, se contratto sottoscritto entro 20 giorni</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARTNERSHIP -->
+        <div class="content-section rounded-3xl p-8 text-center animate-slide-up" style="animation-delay: 1.6s;">
+            <h3 class="text-3xl font-black text-gray-800 mb-8">🤝 Partnership Strategica</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <!-- BestBadge -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl font-bold">BB</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-xl mb-2">BestBadge</h4>
+                    <p class="text-gray-600 text-sm">
+                        Tutela legale, fiscale e di patronato specializzata
+                    </p>
+                </div>
+
+                <!-- Plus Symbol -->
+                <div class="text-center">
+                    <div class="text-6xl text-gray-300 font-light">+</div>
+                </div>
+
+                <!-- Fondazione ASSOSAFE -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl font-bold">AS</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-xl mb-2">Fondazione ASSOSAFE</h4>
+                    <p class="text-gray-600 text-sm">
+                        Leader nei servizi di formazione e sicurezza sul lavoro
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl">
+                <p class="text-lg text-gray-700 font-medium">
+                    Insieme per creare un <strong>sistema di protezione completo</strong> attorno a chi lavora 
+                    e a chi serve il Paese, garantendo <strong>sicurezza, formazione e tutela legale</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- CALL TO ACTION -->
+        <div class="content-section rounded-3xl p-8 text-center bg-gradient-to-r from-primary to-secondary text-white animate-scale-in" style="animation-delay: 1.8s;">
+            <div class="text-6xl mb-6">🚀</div>
+            <h3 class="text-3xl font-black mb-4">Il VOSTRO Successo è il NOSTRO Successo!</h3>
+            <p class="text-xl mb-8 opacity-90">
+                Scopri come possiamo proteggerti con i nostri servizi di tutela a 360°
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:info@assosafe.org" 
+                   class="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    📧 Contattaci Ora
+                </a>
+                <a href="https://www.bestbadge.org/" target="_blank" rel="noopener noreferrer"
+                   class="bg-white/20 text-white border-2 border-white px-8 py-4 rounded-xl font-bold hover:bg-white/30 transition-all duration-300 transform hover:scale-105">
+                    🌐 Visita il Sito
+                </a>
+                <a href="https://bestbadge.org/richiesta-supporto/" target="_blank" rel="noopener noreferrer"
+                   class="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-xl font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    🆘 Richiedi Supporto
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER NAVIGATION UNIFORME -->
+    <nav class="footer-nav">
+        <div class="footer-nav-container">
+            <a href="home.html" class="footer-nav-item" id="nav-home">
+                <span class="footer-nav-icon">🏠</span>
+                <span class="footer-nav-label">Home</span>
+            </a>
+            <a href="tessera.html" class="footer-nav-item" id="nav-tessera">
+                <span class="footer-nav-icon">💳</span>
+                <span class="footer-nav-label">Tessera</span>
+            </a>
+            <a href="servizi.html" class="footer-nav-item active" id="nav-servizi">
+                <span class="footer-nav-icon">🛡️</span>
+                <span class="footer-nav-label">Servizi</span>
+            </a>
+            <a href="profilo.html" class="footer-nav-item" id="nav-profilo">
+                <span class="footer-nav-icon">👤</span>
+                <span class="footer-nav-label">Profilo</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/main.js"></script>
+    
+    <!-- Script di Attivazione Navigation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Inizializzazione pagina servizi...');
+            
+            // Attiva il tab servizi
+            document.getElementById('nav-servizi').classList.add('active');
+            
+            // Smooth scroll per link interni
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Animazioni al scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Osserva tutti gli elementi con animazioni
+            document.querySelectorAll('.animate-slide-up, .animate-scale-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
