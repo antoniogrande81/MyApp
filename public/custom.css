@@ -1156,3 +1156,388 @@ button:not(.hidden) {
     outline: 2px solid blue !important;
 }
 */
+/* ============================================= */
+/* FIX COLORI BOTTONI - DEFINIZIONI DIRETTE CSS */
+/* Aggiungere questo al custom.css */
+/* ============================================= */
+
+/* ========================================= */
+/* 1. COLORI PRIMARY (BLU PRINCIPALE) */
+/* ========================================= */
+
+/* Bottoni Primary */
+.bg-primary,
+button[class*="bg-primary"],
+input[class*="bg-primary"],
+a[class*="bg-primary"],
+[class*="bg-primary"] {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+}
+
+.bg-primary:hover,
+button[class*="bg-primary"]:hover,
+input[class*="bg-primary"]:hover,
+a[class*="bg-primary"]:hover {
+    background-color: #1e0099 !important;
+    border-color: #1e0099 !important;
+}
+
+/* ========================================= */
+/* 2. COLORI BLU GENERICI */
+/* ========================================= */
+
+/* bg-blue-600, bg-blue-500, etc */
+.bg-blue-600,
+button[class*="bg-blue-6"],
+[class*="bg-blue-6"] {
+    background-color: #2563eb !important;
+    color: white !important;
+    border: 1px solid #2563eb !important;
+}
+
+.bg-blue-600:hover,
+button[class*="bg-blue-6"]:hover {
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+
+.bg-blue-500,
+button[class*="bg-blue-5"],
+[class*="bg-blue-5"] {
+    background-color: #3b82f6 !important;
+    color: white !important;
+    border: 1px solid #3b82f6 !important;
+}
+
+.bg-blue-500:hover,
+button[class*="bg-blue-5"]:hover {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+/* ========================================= */
+/* 3. COLORI SECONDARY E ACCENT */
+/* ========================================= */
+
+/* Secondary (Viola) */
+.bg-secondary,
+button[class*="bg-secondary"],
+[class*="bg-secondary"] {
+    background-color: #8E008C !important;
+    color: white !important;
+    border: 1px solid #8E008C !important;
+}
+
+.bg-secondary:hover,
+button[class*="bg-secondary"]:hover {
+    background-color: #7a0077 !important;
+    border-color: #7a0077 !important;
+}
+
+/* Accent (Ciano) */
+.bg-accent,
+button[class*="bg-accent"],
+[class*="bg-accent"] {
+    background-color: #00BFFF !important;
+    color: white !important;
+    border: 1px solid #00BFFF !important;
+}
+
+.bg-accent:hover,
+button[class*="bg-accent"]:hover {
+    background-color: #0099cc !important;
+    border-color: #0099cc !important;
+}
+
+/* ========================================= */
+/* 4. COLORI VERDE (SUCCESS) */
+/* ========================================= */
+
+.bg-green-600,
+.bg-green-500,
+button[class*="bg-green"],
+[class*="bg-green"] {
+    background-color: #16a34a !important;
+    color: white !important;
+    border: 1px solid #16a34a !important;
+}
+
+.bg-green-600:hover,
+.bg-green-500:hover,
+button[class*="bg-green"]:hover {
+    background-color: #15803d !important;
+    border-color: #15803d !important;
+}
+
+/* ========================================= */
+/* 5. COLORI ROSSO (DANGER) */
+/* ========================================= */
+
+.bg-red-600,
+.bg-red-500,
+.bg-danger,
+button[class*="bg-red"],
+button[class*="bg-danger"],
+[class*="bg-red"],
+[class*="bg-danger"] {
+    background-color: #dc2626 !important;
+    color: white !important;
+    border: 1px solid #dc2626 !important;
+}
+
+.bg-red-600:hover,
+.bg-red-500:hover,
+.bg-danger:hover,
+button[class*="bg-red"]:hover,
+button[class*="bg-danger"]:hover {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+}
+
+/* ========================================= */
+/* 6. COLORI GRIGIO */
+/* ========================================= */
+
+.bg-gray-600,
+.bg-gray-500,
+button[class*="bg-gray"],
+[class*="bg-gray"] {
+    background-color: #4b5563 !important;
+    color: white !important;
+    border: 1px solid #4b5563 !important;
+}
+
+.bg-gray-600:hover,
+.bg-gray-500:hover,
+button[class*="bg-gray"]:hover {
+    background-color: #374151 !important;
+    border-color: #374151 !important;
+}
+
+/* ========================================= */
+/* 7. FIX SPECIFICI PER PAGINE */
+/* ========================================= */
+
+/* PAGINA LOGIN */
+#loginForm button,
+#loginForm button[type="submit"],
+form[id*="login"] button {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+}
+
+#loginForm button:hover,
+form[id*="login"] button:hover {
+    background-color: #1e0099 !important;
+    border-color: #1e0099 !important;
+}
+
+/* PAGINA REGISTER */
+#registerForm button,
+#registerForm button[type="submit"],
+form[id*="register"] button {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+}
+
+#registerForm button:hover,
+form[id*="register"] button:hover {
+    background-color: #1e0099 !important;
+    border-color: #1e0099 !important;
+}
+
+/* PAGINA TURNI */
+#turnoForm button,
+#licenzaForm button,
+#recuperoForm button,
+button[id*="turno"],
+button[id*="licenza"],
+button[id*="recupero"] {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+}
+
+#turnoForm button:hover,
+#licenzaForm button:hover,
+#recuperoForm button:hover {
+    background-color: #1e0099 !important;
+    border-color: #1e0099 !important;
+}
+
+/* Bottoni navigazione mesi */
+button[onclick*="Month"],
+button[onclick*="previousMonth"],
+button[onclick*="nextMonth"] {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+
+/* Bottoni modal turni */
+button[onclick*="Modal"],
+button[onclick*="openTurnoModal"],
+button[onclick*="openLicenzaModal"],
+button[onclick*="openRecuperoModal"] {
+    background: linear-gradient(135deg, #2400C1, #8E008C) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.75rem !important;
+    font-weight: 700 !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(36, 0, 193, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+button[onclick*="Modal"]:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(36, 0, 193, 0.4) !important;
+}
+
+/* ========================================= */
+/* 8. BOTTONI GENERICI SENZA CLASSE */
+/* ========================================= */
+
+/* Tutti i bottoni submit senza classi specifiche */
+button[type="submit"]:not([class*="bg-"]),
+input[type="submit"]:not([class*="bg-"]),
+button:not([class*="bg-"]):not(.nav-item):not(.footer-nav-item) {
+    background-color: #2400C1 !important;
+    color: white !important;
+    border: 1px solid #2400C1 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+    font-size: 0.95rem !important;
+}
+
+button[type="submit"]:not([class*="bg-"]):hover,
+input[type="submit"]:not([class*="bg-"]):hover,
+button:not([class*="bg-"]):not(.nav-item):not(.footer-nav-item):hover {
+    background-color: #1e0099 !important;
+    border-color: #1e0099 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ========================================= */
+/* 9. BOTTONI CON GRADIENTI */
+/* ========================================= */
+
+/* Gradiente primary-secondary */
+.bg-gradient-to-r[class*="primary"][class*="secondary"],
+button[class*="gradient"][class*="primary"],
+[class*="gradient"][class*="primary"] {
+    background: linear-gradient(135deg, #2400C1, #8E008C) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.bg-gradient-to-r[class*="primary"][class*="secondary"]:hover,
+button[class*="gradient"][class*="primary"]:hover {
+    background: linear-gradient(135deg, #1e0099, #7a0077) !important;
+    transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* ========================================= */
+/* 10. STATI DISABILITATI */
+/* ========================================= */
+
+button:disabled,
+button[disabled],
+input:disabled,
+input[disabled] {
+    background-color: #d1d5db !important;
+    color: #6b7280 !important;
+    border-color: #d1d5db !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+button:disabled:hover,
+button[disabled]:hover,
+input:disabled:hover,
+input[disabled]:hover {
+    transform: none !important;
+    background-color: #d1d5db !important;
+}
+
+/* ========================================= */
+/* 11. FOCUS E ACCESSIBILITY */
+/* ========================================= */
+
+button:focus,
+input[type="submit"]:focus,
+input[type="button"]:focus {
+    outline: 2px solid #2400C1 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(36, 0, 193, 0.2) !important;
+}
+
+/* ========================================= */
+/* 12. BOTTONI LINK-STYLE */
+/* ========================================= */
+
+/* Link che sembrano bottoni */
+a[class*="bg-primary"],
+a[class*="bg-blue"],
+a[class*="bg-secondary"],
+a[class*="bg-accent"] {
+    display: inline-block !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+/* ========================================= */
+/* 13. RESPONSIVE */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        min-height: 48px !important; /* Touch friendly */
+        font-size: 1rem !important;
+        padding: 0.875rem 1rem !important;
+    }
+    
+    button[onclick*="Modal"] {
+        padding: 1rem !important;
+        min-height: 52px !important;
+    }
+}
