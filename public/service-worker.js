@@ -1,13 +1,23 @@
-const CACHE_NAME = 'myapp-cc-cache-v2'; // Ho incrementato la versione per forzare l'aggiornamento
+// Aumenta la versione ogni volta che modifichi questo file per forzare l'aggiornamento
+const CACHE_NAME = 'myapp-cc-cache-v3'; 
+
+// Lista completa e corretta dei file da mettere in cache
 const urlsToCache = [
   '/',
-  '/public/index.html',
-  '/public/login.html',
+  '/index.html',
+  '/login.html',
+  '/register.html',
+  '/logout.html',
+  '/admin.html',
+  '/home.html', // Aggiunto per coerenza
   '/app/tessera.html',
   '/app/profilo.html',
+  '/app/dirigenti.html',
+  '/app/dirigente-dashboard.html',
   '/scripts/main.js',
+  '/css/style.css', // Aggiunto file CSS
   '/manifest.json'
-  // Aggiungi qui altre pagine locali che vuoi che funzionino offline
+  // Aggiungi qui altre risorse importanti (es. /images/logo.png)
 ];
 
 // Evento di installazione: pre-carica le risorse dell'app
@@ -15,8 +25,11 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache aperta');
+        console.log('Service Worker: Cache aperta e file aggiunti.');
         return cache.addAll(urlsToCache);
+      })
+      .catch(error => {
+        console.error('Service Worker: Errore durante il caching dei file:', error);
       })
   );
 });
@@ -28,6 +41,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cache => {
           if (cache !== CACHE_NAME) {
+            console.log('Service Worker: Rimozione vecchia cache:', cache);
             return caches.delete(cache);
           }
         })
@@ -36,18 +50,19 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Evento Fetch: decide come rispondere alle richieste
+// Evento Fetch: serve i file dalla cache (strategia Cache-First)
 self.addEventListener('fetch', event => {
-  // Strategia: Cache-First solo per le richieste locali (stessa origine)
+  // Rispondi solo alle richieste della stessa origine (non alle API esterne)
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
+        // Se la risorsa è nella cache, restituiscila
         if (cachedResponse) {
-          return cachedResponse; // Restituisce dalla cache se presente
+          return cachedResponse;
         }
-        return fetch(event.request); // Altrimenti, scarica dalla rete
+        // Altrimenti, scaricala dalla rete
+        return fetch(event.request);
       })
     );
   }
-  // Per le richieste esterne (es. API, immagini placeholder), lascia che il browser le gestisca
 });
