@@ -1,6 +1,6 @@
 // ========================================================================
-//              MAIN.JS - VERSIONE FINALE E COMPLETA
-//                  Include tutte le funzionalità
+//              MAIN.JS - VERSIONE CORRETTA CON DEBUG E FIX
+//                  Include tutte le funzionalità + correzioni
 // ========================================================================
 
 // --- 1. CONFIGURAZIONE SUPABASE ---
@@ -9,9 +9,16 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 let supabase;
 try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Verifica che la libreria Supabase sia caricata
+    if (typeof window.supabase === 'undefined') {
+        console.error("❌ Libreria Supabase non caricata. Verifica che lo script sia incluso nell'HTML.");
+        alert("Errore: Libreria Supabase non trovata. Controlla la connessione internet.");
+    } else {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log("✅ Supabase inizializzato correttamente");
+    }
 } catch (error) {
-    console.error("Errore durante l'inizializzazione di Supabase:", error);
+    console.error("❌ Errore durante l'inizializzazione di Supabase:", error);
     alert("Impossibile connettersi al backend. Controlla la configurazione.");
 }
 
@@ -19,8 +26,8 @@ try {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => console.log('Service Worker registrato con successo.'))
-      .catch(error => console.log('Registrazione Service Worker fallita:', error));
+      .then(registration => console.log('✅ Service Worker registrato con successo.'))
+      .catch(error => console.log('❌ Registrazione Service Worker fallita:', error));
   });
 }
 
@@ -31,10 +38,16 @@ const isAppPage = () => getCurrentPath().startsWith('/app/');
 // --- 4. GESTIONE AUTENTICAZIONE ---
 const checkUserSession = async () => {
     try {
-        const { data: { session } } = await supabase.auth.getSession();
+        console.log("🔍 Controllo sessione utente...");
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) {
+            console.error("❌ Errore nel controllo sessione:", error);
+            return null;
+        }
+        console.log("✅ Sessione:", session ? "Attiva" : "Non trovata");
         return session;
     } catch (error) {
-        console.error('Errore controllo sessione:', error);
+        console.error('❌ Errore controllo sessione:', error);
         return null;
     }
 };
@@ -42,11 +55,16 @@ const checkUserSession = async () => {
 const getUserRoles = async (session) => {
     if (!session) return [];
     try {
+        console.log("🔍 Recupero ruoli utente...");
         const { data: profile, error } = await supabase.from('profiles').select('ruoli').eq('id', session.user.id).single();
-        if (error) throw error;
+        if (error) {
+            console.error("❌ Errore nel recuperare i ruoli:", error);
+            return [];
+        }
+        console.log("✅ Ruoli utente:", profile?.ruoli || []);
         return profile?.ruoli || [];
     } catch (error) {
-        console.error('Errore nel recuperare i ruoli del profilo:', error);
+        console.error('❌ Errore nel recuperare i ruoli del profilo:', error);
         return [];
     }
 };
@@ -56,6 +74,7 @@ const protectPage = async () => {
     const currentPath = getCurrentPath();
 
     if (!session && isAppPage()) {
+        console.log("🔒 Utente non autenticato, reindirizzamento al login");
         window.location.replace('/public/login.html');
         return;
     }
@@ -71,11 +90,13 @@ const protectPage = async () => {
     }
 };
 
-
 // --- 5. GESTIONE FEEDBACK UTENTE ---
 const showFeedback = (message, type = 'error', containerId = 'feedback') => {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container) {
+        console.warn(`⚠️ Container feedback '${containerId}' non trovato`);
+        return;
+    }
     const colors = {
         error: 'bg-red-100 border-red-400 text-red-700',
         success: 'bg-green-100 border-green-400 text-green-700'
@@ -120,7 +141,6 @@ const initLoginPage = () => {
 /** PAGINA REGISTER **/
 const initRegisterPage = () => {
     const registerForm = document.getElementById('registerForm');
-    const registerFeedback = document.getElementById('registerFeedback');
 
     if (!registerForm) return;
 
@@ -153,11 +173,6 @@ const initRegisterPage = () => {
 
             if (authError) throw authError;
 
-            // Nota: La creazione del profilo nella tabella 'profiles' con nome, cognome, telefono
-            // dovrebbe idealmente essere gestita da un trigger su Supabase (es. su auth.users insert).
-            // Se non hai un trigger, questi dati non verranno automaticamente copiati nella tabella 'profiles'.
-            // L'utente è comunque creato in auth.users.
-
             showFeedback('Registrazione avvenuta con successo! Controlla la tua email per la conferma.', 'success', 'registerFeedback');
             setTimeout(() => {
                 window.location.replace('/public/login.html');
@@ -179,19 +194,25 @@ const initRegisterPage = () => {
     });
 };
 
-
 /** PAGINA HOME **/
 const initHomePage = async () => {
+    console.log("🏠 Inizializzazione pagina Home...");
     const session = await checkUserSession();
     if (!session) return;
 
     try {
-        const { data: profile } = await supabase.from('profiles').select('nome').eq('id', session.user.id).single();
-        if (profile && profile.nome) {
+        console.log("🔍 Caricamento dati profilo utente...");
+        const { data: profile, error } = await supabase.from('profiles').select('nome').eq('id', session.user.id).single();
+        if (error) {
+            console.error("❌ Errore caricamento profilo:", error);
+        } else if (profile && profile.nome) {
             const welcomeUser = document.getElementById('welcome-user');
             if (welcomeUser) welcomeUser.textContent = `Benvenuto, ${profile.nome}!`;
+            console.log("✅ Nome utente caricato:", profile.nome);
         }
-    } catch (error) { console.error('Errore nel caricare il nome:', error); }
+    } catch (error) { 
+        console.error('❌ Errore nel caricare il nome:', error); 
+    }
 
     const roles = await getUserRoles(session);
     const managementTools = document.getElementById('management-tools');
@@ -207,11 +228,17 @@ const initHomePage = async () => {
         if(dirigenteLink) dirigenteLink.classList.remove('hidden');
     }
 
+    // Caricamento notizie con debug migliorato
     const newsContainer = document.getElementById('news-container');
     if (newsContainer) {
         try {
+            console.log("🔍 Caricamento notizie...");
             const { data: news, error } = await supabase.from('notizie').select('*').order('data_pubblicazione', { ascending: false }).limit(3);
-            if (error) throw error;
+            if (error) {
+                console.error("❌ Errore caricamento notizie:", error);
+                throw error;
+            }
+            console.log("✅ Notizie caricate:", news?.length || 0);
             if (news && news.length > 0) {
                 newsContainer.innerHTML = news.map(item => `
                     <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-primary transition-transform hover:translate-x-1 hover:shadow-lg">
@@ -220,15 +247,26 @@ const initHomePage = async () => {
                         <p class="text-gray-500 text-xs mt-2">${new Date(item.data_pubblicazione).toLocaleDateString('it-IT')}</p>
                     </div>
                 `).join('');
-            } else { newsContainer.innerHTML = '<p class="text-gray-500">Nessuna notizia recente.</p>'; }
-        } catch (error) { newsContainer.innerHTML = `<p class="text-red-500">Impossibile caricare le notizie: ${error.message}</p>`; }
+            } else { 
+                newsContainer.innerHTML = '<p class="text-gray-500">Nessuna notizia recente.</p>'; 
+            }
+        } catch (error) { 
+            console.error("❌ Errore caricamento notizie:", error);
+            newsContainer.innerHTML = `<p class="text-red-500">Impossibile caricare le notizie: ${error.message}</p>`; 
+        }
     }
 
+    // Caricamento convenzioni con debug migliorato
     const convenzioniContainer = document.getElementById('convenzioni-container');
     if (convenzioniContainer) {
         try {
+            console.log("🔍 Caricamento convenzioni...");
             const { data: convenzioni, error } = await supabase.from('convenzioni').select('*').limit(4);
-            if (error) throw error;
+            if (error) {
+                console.error("❌ Errore caricamento convenzioni:", error);
+                throw error;
+            }
+            console.log("✅ Convenzioni caricate:", convenzioni?.length || 0);
             if (convenzioni && convenzioni.length > 0) {
                 convenzioniContainer.innerHTML = convenzioni.map(item => `
                     <div class="bg-gray-50 p-3 rounded-xl text-center shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md">
@@ -240,22 +278,35 @@ const initHomePage = async () => {
                         ${item.sconto_percentuale ? `<span class="text-xs text-green-600 font-medium">${item.sconto_percentuale}% OFF</span>` : ''}
                     </div>
                 `).join('');
-            } else { convenzioniContainer.innerHTML = '<p class="text-gray-500 col-span-2">Nessuna convenzione.</p>'; }
-        } catch (error) { convenzioniContainer.innerHTML = `<p class="text-red-500 col-span-full">Impossibile caricare: ${error.message}</p>`; }
+            } else { 
+                convenzioniContainer.innerHTML = '<p class="text-gray-500 col-span-2">Nessuna convenzione.</p>'; 
+            }
+        } catch (error) { 
+            console.error("❌ Errore caricamento convenzioni:", error);
+            convenzioniContainer.innerHTML = `<p class="text-red-500 col-span-full">Impossibile caricare: ${error.message}</p>`; 
+        }
     }
 };
 
 /** PAGINA DIRIGENTI **/
 const initDirigentiPage = async () => {
+    console.log("👥 Inizializzazione pagina Dirigenti...");
     const list = document.getElementById('dirigenti-list');
     if (!list) return;
+    
     try {
+        console.log("🔍 Caricamento dirigenti...");
         const { data: dirigenti, error } = await supabase
             .from('organico_dirigentisindacali')
             .select('*')
             .order('id');
 
-        if (error) throw error;
+        if (error) {
+            console.error("❌ Errore caricamento dirigenti:", error);
+            throw error;
+        }
+
+        console.log("✅ Dirigenti caricati:", dirigenti?.length || 0);
 
         if (dirigenti && dirigenti.length > 0) {
             list.innerHTML = dirigenti.map(item => {
@@ -276,48 +327,114 @@ const initDirigentiPage = async () => {
             list.innerHTML = '<p class="text-gray-500">La lista dei dirigenti non è disponibile.</p>';
         }
     } catch (error) {
+        console.error("❌ Errore caricamento dirigenti:", error);
         list.innerHTML = `<p class="text-red-500">Impossibile caricare i dirigenti: ${error.message}</p>`;
     }
 };
 
-/** PAGINA TESSERA **/
+/** PAGINA TESSERA - CORRETTA CON DEBUG **/
 const loadTesseraData = async () => {
+    console.log("🎫 Inizializzazione pagina Tessera...");
     const session = await checkUserSession();
-    if (!session) return;
-    try {
-        const { data: profile } = await supabase.from('profiles').select('nome, cognome').eq('id', session.user.id).single();
-        const { data: tessera } = await supabase.from('tessere').select('numero_tessera, data_scadenza').eq('user_id', session.user.id).single();
+    if (!session) {
+        console.error("❌ Nessuna sessione attiva per tessera");
+        return;
+    }
 
-        document.getElementById('tessera-nome').textContent = `${profile.nome || ''} ${profile.cognome || ''}`;
-        if (tessera) {
-            document.getElementById('tessera-numero').textContent = tessera.numero_tessera;
-            document.getElementById('tessera-scadenza').textContent = new Date(tessera.data_scadenza).toLocaleDateString('it-IT');
-            document.getElementById('tessera-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(tessera.numero_tessera)}`;
+    try {
+        console.log("🔍 Caricamento dati profilo per tessera...");
+        // Caricamento dati profilo
+        const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('nome, cognome')
+            .eq('id', session.user.id)
+            .single();
+
+        if (profileError) {
+            console.error("❌ Errore caricamento profilo:", profileError);
         } else {
-            document.getElementById('tessera-numero').textContent = 'N/A';
-            document.getElementById('tessera-scadenza').textContent = 'N/A';
+            console.log("✅ Profilo caricato:", profile);
         }
+
+        console.log("🔍 Caricamento dati tessera...");
+        // Caricamento dati tessera
+        const { data: tessera, error: tesseraError } = await supabase
+            .from('tessere')
+            .select('numero_tessera, data_scadenza')
+            .eq('user_id', session.user.id)
+            .single();
+
+        if (tesseraError) {
+            console.error("❌ Errore caricamento tessera:", tesseraError);
+        } else {
+            console.log("✅ Tessera caricata:", tessera);
+        }
+
+        // Aggiornamento elementi DOM
+        const nomeElement = document.getElementById('tessera-nome');
+        const numeroElement = document.getElementById('tessera-numero');
+        const scadenzaElement = document.getElementById('tessera-scadenza');
+        const qrcodeElement = document.getElementById('tessera-qrcode');
+
+        if (nomeElement) {
+            const nomeCompleto = `${profile?.nome || ''} ${profile?.cognome || ''}`.trim();
+            nomeElement.textContent = nomeCompleto || 'Nome non disponibile';
+        }
+
+        if (numeroElement) {
+            numeroElement.textContent = tessera?.numero_tessera || 'N/A';
+        }
+
+        if (scadenzaElement) {
+            scadenzaElement.textContent = tessera?.data_scadenza 
+                ? new Date(tessera.data_scadenza).toLocaleDateString('it-IT')
+                : 'N/A';
+        }
+
+        if (qrcodeElement && tessera?.numero_tessera) {
+            // FIX: Usa un servizio QR code funzionante
+            qrcodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(tessera.numero_tessera)}`;
+            qrcodeElement.alt = `QR Code tessera ${tessera.numero_tessera}`;
+        } else if (qrcodeElement) {
+            // Fallback se non c'è numero tessera
+            qrcodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Tessera%20non%20disponibile`;
+            qrcodeElement.alt = "QR Code non disponibile";
+        }
+
+        console.log("✅ Dati tessera aggiornati nell'interfaccia");
+
     } catch (error) {
-        document.getElementById('tessera-nome').textContent = 'Errore nel caricamento dei dati.';
-        console.error("Errore caricamento dati tessera:", error);
+        console.error("❌ Errore generale caricamento dati tessera:", error);
+        const nomeElement = document.getElementById('tessera-nome');
+        if (nomeElement) {
+            nomeElement.textContent = 'Errore nel caricamento dei dati.';
+        }
     }
 };
 
 /** PAGINA PROFILO **/
 const loadProfileData = async () => {
+    console.log("👤 Inizializzazione pagina Profilo...");
     const session = await checkUserSession();
     if (!session) return;
     const form = document.getElementById('profileForm');
     if (!form) return;
 
     try {
+        console.log("🔍 Caricamento dati profilo...");
         const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-        if (error) throw error;
+        if (error) {
+            console.error("❌ Errore caricamento profilo:", error);
+            throw error;
+        }
+        console.log("✅ Profilo caricato:", profile);
+        
         form.email.value = session.user.email;
-        form.nome.value = profile.nome || '';
-        form.cognome.value = profile.cognome || '';
-        form.telefono.value = profile.telefono || '';
+        form.nome.value = profile?.nome || '';
+        form.cognome.value = profile?.cognome || '';
+        form.telefono.value = profile?.telefono || '';
     } catch (error) {
+        console.error("❌ Errore caricamento dati profilo:", error);
         showFeedback('Impossibile caricare i dati del profilo.', 'error', 'profileFeedback');
     }
 
@@ -326,7 +443,13 @@ const loadProfileData = async () => {
         const submitButton = form.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.textContent = 'Salvataggio...';
-        const updates = { id: session.user.id, nome: form.nome.value, cognome: form.cognome.value, telefono: form.telefono.value, updated_at: new Date() };
+        const updates = { 
+            id: session.user.id, 
+            nome: form.nome.value, 
+            cognome: form.cognome.value, 
+            telefono: form.telefono.value, 
+            updated_at: new Date() 
+        };
         try {
             const { error: updateError } = await supabase.from('profiles').upsert(updates);
             if (updateError) throw updateError;
@@ -342,10 +465,12 @@ const loadProfileData = async () => {
 
 /** PAGINA DI LOGOUT **/
 const initLogoutPage = async () => {
+    console.log("🚪 Logout in corso...");
     try {
         await supabase.auth.signOut();
+        console.log("✅ Logout completato");
     } catch (error) {
-        console.error('Errore durante il logout:', error);
+        console.error('❌ Errore durante il logout:', error);
     } finally {
         setTimeout(() => { window.location.replace('/public/login.html'); }, 1000);
     }
@@ -365,7 +490,16 @@ function getPriorityIcon(priorita) {
 }
 
 function getCategoryIcon(categoria) {
-    const icons = { 'assicurazioni': '🛡️', 'automotive': '🚗', 'tecnologia': '💻', 'viaggi': '✈️', 'wellness': '💆', 'shopping': '🛍️', 'servizi': '🔧', 'altro': '📦' };
+    const icons = { 
+        'assicurazioni': '🛡️', 
+        'automotive': '🚗', 
+        'tecnologia': '💻', 
+        'viaggi': '✈️', 
+        'wellness': '💆', 
+        'shopping': '🛍️', 
+        'servizi': '🔧', 
+        'altro': '📦' 
+    };
     return icons[categoria] || '📦';
 }
 
@@ -477,7 +611,7 @@ async function deleteQuickNotizia(id) {
     }
 }
 
-// --- Funzioni Gestione Convenzioni (CORRETTE E COMPLETE) ---
+// --- Funzioni Gestione Convenzioni ---
 async function quickAddConvenzione(event) {
     event.preventDefault();
     const form = event.target;
@@ -553,6 +687,7 @@ async function deleteQuickConvenzione(id) {
 
 /** Inizializza la pagina della dashboard del dirigente. */
 const initDirigenteDashboardPage = () => {
+    console.log("📊 Inizializzazione Dashboard Dirigente...");
     const notiziaForm = document.getElementById('quickNotiziaForm');
     if (notiziaForm) {
         notiziaForm.addEventListener('submit', quickAddNotizia);
@@ -566,26 +701,87 @@ const initDirigenteDashboardPage = () => {
     }
 };
 
-// --- 8. ROUTER E INIZIALIZZAZIONE PRINCIPALE ---
+// --- 8. FUNZIONI DI DEBUG E TROUBLESHOOTING ---
+
+// Funzione per testare la connessione a Supabase
+const testSupabaseConnection = async () => {
+    console.log("🔧 Test connessione Supabase...");
+    try {
+        // Test semplice connessione
+        const { data, error } = await supabase.from('profiles').select('count').limit(1);
+        if (error) {
+            console.error("❌ Errore connessione Supabase:", error);
+            return false;
+        }
+        console.log("✅ Connessione Supabase OK");
+        return true;
+    } catch (error) {
+        console.error("❌ Errore test connessione:", error);
+        return false;
+    }
+};
+
+// Funzione per verificare le tabelle esistenti
+const checkDatabaseTables = async () => {
+    console.log("🔧 Verifica tabelle database...");
+    const tables = ['profiles', 'tessere', 'notizie', 'convenzioni', 'organico_dirigentisindacali'];
+    
+    for (const table of tables) {
+        try {
+            const { data, error } = await supabase.from(table).select('*').limit(1);
+            if (error) {
+                console.error(`❌ Tabella '${table}' non accessibile:`, error);
+            } else {
+                console.log(`✅ Tabella '${table}' OK`);
+            }
+        } catch (error) {
+            console.error(`❌ Errore accesso tabella '${table}':`, error);
+        }
+    }
+};
+
+// --- 9. ROUTER E INIZIALIZZAZIONE PRINCIPALE ---
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("🚀 Inizializzazione applicazione...");
+    
+    // Test connessione se in modalità debug
+    if (window.location.search.includes('debug=true')) {
+        await testSupabaseConnection();
+        await checkDatabaseTables();
+    }
+    
     await protectPage();
 
     const path = getCurrentPath();
-    console.log('Pagina corrente:', path);
+    console.log('📍 Pagina corrente:', path);
 
-    if (path.endsWith('/home.html') || path === '/app/' || path === '/') initHomePage();
-    else if (path.endsWith('/login.html')) initLoginPage();
-    else if (path.endsWith('/register.html')) initRegisterPage(); // <--- AGGIUNTA QUI
-    else if (path.endsWith('/logout.html')) initLogoutPage();
-    else if (path.endsWith('/dirigenti.html')) initDirigentiPage();
-    else if (path.endsWith('/tessera.html')) loadTesseraData();
-    else if (path.endsWith('/profilo.html')) loadProfileData();
-    else if (path.endsWith('/dirigente-dashboard.html')) initDirigenteDashboardPage();
-    // Aggiungi qui gli "else if" per le altre pagine (admin, etc.)
+    // Router delle pagine
+    if (path.endsWith('/home.html') || path === '/app/' || path === '/') {
+        await initHomePage();
+    } else if (path.endsWith('/login.html')) {
+        initLoginPage();
+    } else if (path.endsWith('/register.html')) {
+        initRegisterPage();
+    } else if (path.endsWith('/logout.html')) {
+        await initLogoutPage();
+    } else if (path.endsWith('/dirigenti.html')) {
+        await initDirigentiPage();
+    } else if (path.endsWith('/tessera.html')) {
+        await loadTesseraData();
+    } else if (path.endsWith('/profilo.html')) {
+        await loadProfileData();
+    } else if (path.endsWith('/dirigente-dashboard.html')) {
+        initDirigenteDashboardPage();
+    }
+    // Aggiungi qui altri "else if" per le pagine mancanti (admin, etc.)
+    
+    console.log("✅ Inizializzazione completata");
 });
 
-// --- 9. ESPORTAZIONI GLOBALI ---
+// --- 10. ESPORTAZIONI GLOBALI ---
 window.editQuickNotizia = editQuickNotizia;
 window.deleteQuickNotizia = deleteQuickNotizia;
 window.resetNotiziaForm = resetNotiziaForm;
 window.deleteQuickConvenzione = deleteQuickConvenzione;
+window.testSupabaseConnection = testSupabaseConnection;
+window.checkDatabaseTables = checkDatabaseTables;
