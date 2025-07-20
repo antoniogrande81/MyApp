@@ -735,3 +735,424 @@ body {
         display: none !important;
     }
 }
+/* ============================================= */
+/* FIX CRITICO - VISIBILITÀ BOTTONI E ELEMENTI UI */
+/* Aggiungere questo CSS al file custom.css */
+/* ============================================= */
+
+/* ========================================= */
+/* 1. FIX BOTTONI - FORZA VISIBILITÀ */
+/* ========================================= */
+
+/* Tutti i bottoni devono essere visibili */
+button,
+.btn,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a[role="button"],
+[class*="bg-primary"],
+[class*="bg-secondary"],
+[class*="bg-blue"],
+[class*="bg-green"],
+[class*="bg-red"],
+[class*="bg-gray"] {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Bottoni specifici per forma */
+button[type="submit"],
+button[type="button"],
+.submit-button,
+.action-button,
+.primary-button {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 40px !important;
+    min-width: 80px !important;
+}
+
+/* Link che sembrano bottoni */
+a[class*="bg-"],
+a[class*="button"],
+a[class*="btn"] {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+}
+
+/* ========================================= */
+/* 2. FIX NAVIGATION - FOOTER E HEADER */
+/* ========================================= */
+
+/* Footer Navigation - FIX COMPLETO */
+.footer-nav,
+nav[class*="footer"],
+nav[class*="bottom"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.5rem 0 !important;
+}
+
+/* Container navigation */
+.footer-nav-container,
+.footer-nav .container {
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+/* Items di navigazione */
+.nav-item,
+.footer-nav-item,
+a[href*=".html"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #6b7280 !important;
+    padding: 0.5rem !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.3s ease !important;
+    min-width: 60px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Icone navigation */
+.nav-item > span:first-child,
+.footer-nav-icon,
+.nav-icon {
+    display: block !important;
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    margin-bottom: 0.25rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+/* Label navigation */
+.nav-item > span:last-child,
+.footer-nav-label,
+.nav-label {
+    display: block !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+/* Stati hover e active */
+.nav-item:hover,
+.footer-nav-item:hover,
+.nav-item.active,
+.footer-nav-item.active {
+    color: #2400C1 !important;
+    background: rgba(36, 0, 193, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ========================================= */
+/* 3. FIX FORMS E INPUT */
+/* ========================================= */
+
+/* Tutti gli input e form elements */
+input,
+textarea,
+select,
+form,
+fieldset,
+label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+}
+
+/* Input specifici */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    background: white !important;
+    color: #1f2937 !important;
+}
+
+/* ========================================= */
+/* 4. FIX MODAL E DIALOG */
+/* ========================================= */
+
+/* Modal e overlay */
+.modal,
+.dialog,
+.overlay,
+[role="dialog"] {
+    display: none !important; /* Hidden by default */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 1000 !important;
+}
+
+.modal.active,
+.modal.show,
+.dialog.active,
+.dialog.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Modal content */
+.modal-content,
+.dialog-content {
+    background: white !important;
+    border-radius: 1rem !important;
+    padding: 2rem !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    position: relative !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ========================================= */
+/* 5. FIX ELEMENTI DINAMICI */
+/* ========================================= */
+
+/* Elementi che potrebbero essere nascosti da JavaScript */
+[style*="display: none"],
+[style*="visibility: hidden"],
+[style*="opacity: 0"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Eccezioni - elementi che DEVONO rimanere nascosti */
+.hidden,
+.invisible,
+[aria-hidden="true"],
+[data-hidden="true"],
+.modal:not(.active),
+.dialog:not(.active),
+.dropdown:not(.open),
+.tooltip:not(.show) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* ========================================= */
+/* 6. FIX SPECIFICI PER PAGINE */
+/* ========================================= */
+
+/* Login page */
+#loginForm,
+#loginForm button,
+#registerForm,
+#registerForm button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Home page */
+#management-tools,
+#admin-link,
+#dirigente-link {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Dashboard elements */
+#quickNotiziaForm,
+#quickConvenzioneForm,
+#quickNotiziaForm button,
+#quickConvenzioneForm button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Profile form */
+#profileForm,
+#profileForm button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ========================================= */
+/* 7. FIX LAYOUT E POSITIONING */
+/* ========================================= */
+
+/* Assicura che il body abbia spazio per il footer */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-bottom: 5rem !important;
+    min-height: 100vh !important;
+}
+
+/* Main content spacing */
+main {
+    padding-bottom: 6rem !important;
+    min-height: calc(100vh - 6rem) !important;
+}
+
+/* Header spacing */
+.main-content,
+main[class*="container"] {
+    padding-top: 2rem !important;
+    padding-bottom: 6rem !important;
+}
+
+/* ========================================= */
+/* 8. FIX Z-INDEX E LAYERING */
+/* ========================================= */
+
+/* Assicura che elementi importanti siano sopra */
+.footer-nav {
+    z-index: 9999 !important;
+}
+
+header,
+.header {
+    z-index: 9998 !important;
+}
+
+.modal,
+.dialog {
+    z-index: 10000 !important;
+}
+
+/* Bottoni floating */
+.floating-btn,
+[class*="fixed"] button {
+    z-index: 9997 !important;
+}
+
+/* ========================================= */
+/* 9. FIX RESPONSIVE */
+/* ========================================= */
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+    .nav-item,
+    .footer-nav-item {
+        min-width: 50px !important;
+        padding: 0.375rem !important;
+    }
+    
+    .nav-item > span:first-child,
+    .footer-nav-icon {
+        font-size: 1.25rem !important;
+    }
+    
+    .nav-item > span:last-child,
+    .footer-nav-label {
+        font-size: 0.7rem !important;
+    }
+    
+    button,
+    .btn {
+        min-height: 44px !important; /* Touch friendly */
+        min-width: 44px !important;
+    }
+}
+
+/* ========================================= */
+/* 10. FIX ANTI-OVERRIDE */
+/* ========================================= */
+
+/* Previene che altri CSS nascondano elementi critici */
+button[style],
+.nav-item[style],
+.footer-nav-item[style],
+input[style],
+form[style] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Force display per elementi con classi utility */
+.block,
+.inline-block,
+.flex,
+.inline-flex {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.flex {
+    display: flex !important;
+}
+
+.inline-flex {
+    display: inline-flex !important;
+}
+
+.inline-block {
+    display: inline-block !important;
+}
+
+/* ========================================= */
+/* 11. DEBUG - RIMUOVERE IN PRODUZIONE */
+/* ========================================= */
+
+/* Outline temporaneo per debug - commentare in produzione */
+/*
+button:not(.hidden) {
+    outline: 2px solid red !important;
+}
+
+.nav-item:not(.hidden) {
+    outline: 2px solid blue !important;
+}
+*/
