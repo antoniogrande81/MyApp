@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | MyApp</title>
+
+    <!-- Scripts e Librerie -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Personalizzato NUOVO -->
+    <link rel="stylesheet" href="../css/custom.css?v=2024">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <!-- Configurazione Tailwind con colori personalizzati -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', 
+              secondary: '#8E008C', 
+              accent: '#00BFFF',
+              textDark: '#1C1C1E', 
+              backgroundLight: '#F8FAFC', 
+              white: '#FFFFFF',
+              danger: '#DC2626', 
+              sos: '#E53E3E',
+              success: '#10B981',
+              warning: '#F59E0B',
+            },
+            fontFamily: { 
+                sans: ['Inter', 'Segoe UI', 'Roboto', 'sans-serif'] 
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'float': 'float 3s ease-in-out infinite',
+              'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+              'gradient-shift': 'gradientShift 6s ease-in-out infinite',
+              'scale-in': 'scaleIn 0.5s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+              slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+              float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
+              pulseGlow: { '0%, 100%': { boxShadow: '0 0 20px rgba(229, 62, 62, 0.4)' }, '50%': { boxShadow: '0 0 40px rgba(229, 62, 62, 0.8)' } },
+              gradientShift: { '0%, 100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+              scaleIn: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            },
+            boxShadow: {
+              'glow': '0 0 20px rgba(36, 0, 193, 0.3)',
+              'glow-lg': '0 0 40px rgba(36, 0, 193, 0.4)',
+            }
+          }
+        }
+      }
+    </script>
+    
+    <style>
+        /* Sfondo principale con gradient animato */
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #2400C1 0%, #8E008C 50%, #00BFFF 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Effetti glass migliorati */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Cards con hover effetti */
+        .feature-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(36, 0, 193, 0.2);
+        }
+        
+        /* Icone con gradients */
+        .icon-gradient-blue {
+            background: linear-gradient(135deg, #00BFFF, #0066CC);
+        }
+        
+        .icon-gradient-purple {
+            background: linear-gradient(135deg, #8E008C, #6A0080);
+        }
+        
+        .icon-gradient-green {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+        
+        /* Management tools styling */
+        .management-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .management-card:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer uniforme */
+        .footer-nav {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .nav-item {
+            color: #6b7280 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .nav-item:hover {
+            color: #2400C1 !important;
+            transform: translateY(-3px) !important;
+        }
+        
+        .nav-item.active {
+            color: #2400C1 !important;
+            background: rgba(36, 0, 193, 0.1) !important;
+            border-radius: 0.75rem !important;
+        }
+        
+        /* Floating buttons */
+        .floating-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Sezioni contenuto */
+        .content-section {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Indicatori di loading migliorati */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Stili per link esterni */
+        .external-link {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .external-link::after {
+            content: '🔗';
+            margin-left: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .external-link:hover::after {
+            opacity: 1;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .hero-gradient {
+                min-height: auto;
+                padding: 1rem;
+            }
+            
+            .feature-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 font-sans text-textDark min-h-screen">
+    
+    <!-- HERO SECTION con gradient animato -->
+    <section class="hero-gradient min-h-screen relative">
+        <div class="hero-content">
+            
+            <!-- HEADER moderno -->
+            <header class="glass-header fixed top-0 left-0 right-0 z-30 animate-fade-in">
+                <div class="container mx-auto px-6 py-4">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-glow">
+                                <span class="text-white font-black text-xl">C</span>
+                            </div>
+                            <h1 class="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                                MyApp
+                            </h1>
+                        </div>
+                        <a href="/public/logout.html" class="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors shadow-lg">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- WELCOME SECTION -->
+            <div class="pt-28 pb-8 px-6">
+                <div class="container mx-auto">
+                    <div class="glass-card rounded-3xl p-8 text-center text-white animate-scale-in" style="animation-delay: 0.2s;">
+                        <div class="flex justify-center mb-6">
+                            <div class="text-8xl animate-float">👮‍♂️</div>
+                        </div>
+                        <h2 class="text-4xl font-black mb-4" id="welcome-user">Benvenuto, ANTONIO!</h2>
+                        <p class="text-xl text-white/90 mb-8 font-medium">La tua associazione, a portata di click.</p>
+                        
+                        <div id="management-tools" class="management-card rounded-2xl p-6 mt-6">
+                            <h3 class="font-black text-white text-xl mb-4">🛠️ Strumenti di Gestione</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <a id="admin-link" href="/app/admin.html" class="hidden bg-gradient-to-r from-secondary to-purple-600 text-white font-bold py-4 px-6 rounded-xl text-sm hover:shadow-glow-lg transition-all duration-300 transform hover:scale-105">
+                                    🔧 Pannello Admin
+                                </a>
+                                <a id="dirigente-link" href="/app/dirigente-dashboard.html" class="hidden bg-gradient-to-r from-primary to-blue-600 text-white font-bold py-4 px-6 rounded-xl text-sm hover:shadow-glow-lg transition-all duration-300 transform hover:scale-105">
+                                    📊 Dashboard
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK ACCESS CARDS -->
+            <div class="px-6 pb-8">
+                <div class="container mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style="animation-delay: 0.4s;">
+                        
+                        <a href="servizi.html" class="feature-card p-6 rounded-2xl group">
+                            <div class="flex items-center space-x-4">
+                                <div class="icon-gradient-blue p-4 rounded-2xl text-white text-3xl group-hover:scale-110 transition-transform duration-300">
+                                    🛡️
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-gray-800 group-hover:text-primary transition-colors">Servizi e Tutele</h3>
+                                    <p class="text-gray-600 text-sm">Scopri le nostre convenzioni e protezioni</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="dirigenti.html" class="feature-card p-6 rounded-2xl group">
+                            <div class="flex items-center space-x-4">
+                                <div class="icon-gradient-purple p-4 rounded-2xl text-white text-3xl group-hover:scale-110 transition-transform duration-300">
+                                    👥
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-gray-800 group-hover:text-primary transition-colors">Contatta Dirigenti</h3>
+                                    <p class="text-gray-600 text-sm">Trova i tuoi riferimenti regionali</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="turni.html" class="feature-card p-6 rounded-2xl group">
+                            <div class="flex items-center space-x-4">
+                                <div class="icon-gradient-green p-4 rounded-2xl text-white text-3xl group-hover:scale-110 transition-transform duration-300">
+                                    🗓️
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-gray-800 group-hover:text-primary transition-colors">I Tuoi Strumenti</h3>
+                                    <p class="text-gray-600 text-sm">Organizza il tuo calendario di lavoro</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENT SECTIONS -->
+    <section class="bg-slate-50 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- ULTIME NOTIZIE -->
+                <div class="content-section rounded-2xl p-8 shadow-xl animate-slide-up" style="animation-delay: 0.6s;">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-black text-gray-800 flex items-center">
+                            <span class="w-1 h-8 bg-gradient-to-b from-primary to-secondary rounded-full mr-4"></span>
+                            📰 Ultime Notizie
+                        </h3>
+                        <!-- LINK ESTERNO PER TUTTE LE NOTIZIE -->
+                        <a href="https://your-news-website.com/notizie" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="external-link text-primary font-semibold hover:text-secondary transition-colors text-sm flex items-center bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg">
+                            📖 Leggi tutte
+                        </a>
+                    </div>
+                    <div id="news-container" class="space-y-4">
+                        <div class="loading-shimmer h-20 rounded-lg"></div>
+                        <div class="loading-shimmer h-16 rounded-lg"></div>
+                        <div class="loading-shimmer h-12 rounded-lg"></div>
+                    </div>
+                </div>
+                
+                <!-- CONVENZIONI IN EVIDENZA -->
+                <div class="content-section rounded-2xl p-8 shadow-xl animate-slide-up" style="animation-delay: 0.8s;">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-black text-gray-800 flex items-center">
+                            <span class="w-1 h-8 bg-gradient-to-b from-secondary to-accent rounded-full mr-4"></span>
+                            🤝 Convenzioni
+                        </h3>
+                        <!-- LINK ESTERNO PER TUTTE LE CONVENZIONI -->
+                        <a href="https://your-convenzioni-website.com/convenzioni" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="external-link text-primary font-semibold hover:text-secondary transition-colors text-sm flex items-center bg-green-50 hover:bg-green-100 px-3 py-2 rounded-lg">
+                            🏪 Vedi tutte
+                        </a>
+                    </div>
+                    <div id="convenzioni-container" class="grid grid-cols-2 gap-4">
+                        <div class="loading-shimmer h-24 rounded-lg"></div>
+                        <div class="loading-shimmer h-24 rounded-lg"></div>
+                        <div class="loading-shimmer h-24 rounded-lg"></div>
+                        <div class="loading-shimmer h-24 rounded-lg"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING ACTION BUTTONS -->
+    <a href="https://form.jotform.com/250396120847357" target="_blank" class="floating-btn fixed bottom-28 right-6 w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex flex-col items-center justify-center text-white font-bold z-50 animate-pulse-glow">
+        <div class="text-2xl">🚨</div>
+        <div class="text-xs">S.O.S</div>
+    </a>
+    
+    <a href="virgilio.html" class="floating-btn fixed bottom-28 left-6 w-16 h-16 bg-gradient-to-br from-cyan-400 to-sky-500 rounded-full flex items-center justify-center z-50">
+        <span class="text-3xl animate-pulse">🤖</span>
+    </a>
+
+    <!-- FOOTER NAVIGATION UNIFORME -->
+    <nav class="footer-nav fixed bottom-0 left-0 right-0 z-20">
+        <div class="container mx-auto flex justify-around py-3">
+            <a href="home.html" class="nav-item flex flex-col items-center p-3" id="nav-home">
+                <span class="text-2xl">🏠</span>
+                <span class="text-xs mt-1 font-medium">Home</span>
+            </a>
+            <a href="tessera.html" class="nav-item flex flex-col items-center p-3" id="nav-tessera">
+                <span class="text-2xl">💳</span>
+                <span class="text-xs mt-1 font-medium">Tessera</span>
+            </a>
+            <a href="servizi.html" class="nav-item flex flex-col items-center p-3" id="nav-servizi">
+                <span class="text-2xl">🛡️</span>
+                <span class="text-xs mt-1 font-medium">Servizi</span>
+            </a>
+            <a href="profilo.html" class="nav-item flex flex-col items-center p-3" id="nav-profilo">
+                <span class="text-2xl">👤</span>
+                <span class="text-xs mt-1 font-medium">Profilo</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/main.js"></script>
+    
+    <!-- Script di Attivazione Navigation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Inizializzazione home con nuovo design...');
+            
+            // Mappa pagina → tab da evidenziare
+            const pageNavMap = {
+                'home': 'nav-home',
+                'tessera': 'nav-tessera',
+                'servizi': 'nav-servizi',
+                'profilo': 'nav-profilo',
+                'turni': 'nav-servizi',
+                'dirigenti': 'nav-servizi',
+                'convenzioni': 'nav-servizi',
+                'tutte-convenzioni': 'nav-servizi',
+                'tutte-notizie': 'nav-home',
+                'gestione-contenuti': 'nav-servizi',
+                'dirigente-dashboard': 'nav-servizi',
+                'admin': 'nav-servizi',
+                'virgilio': 'nav-servizi',
+                'notifiche': 'nav-home'
+            };
+            
+            // Determina pagina corrente
+            const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+            
+            // Rimuovi active da tutti gli elementi
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Attiva il tab corretto
+            const activeNavId = pageNavMap[currentPage];
+            if (activeNavId) {
+                const activeElement = document.getElementById(activeNavId);
+                if (activeElement) {
+                    activeElement.classList.add('active');
+                    console.log(`✅ Tab ${activeNavId} attivato`);
+                }
+            }
+            
+            // L'inizializzazione della home page è già gestita da main.js
+            // Non serve duplicare il caricamento dei contenuti
+        });
+        
+        // Funzione per aggiornare i link esterni (da chiamare quando hai gli URL definitivi)
+        function updateExternalLinks(newsUrl, convenzioniUrl) {
+            const newsLink = document.querySelector('a[href*="your-news-website"]');
+            const convenzioniLink = document.querySelector('a[href*="your-convenzioni-website"]');
+            
+            if (newsLink && newsUrl) {
+                newsLink.href = newsUrl;
+                console.log('✅ Link notizie aggiornato:', newsUrl);
+            }
+            
+            if (convenzioniLink && convenzioniUrl) {
+                convenzioniLink.href = convenzioniUrl;
+                console.log('✅ Link convenzioni aggiornato:', convenzioniUrl);
+            }
+        }
+        
+        // Esempio di come aggiornare i link quando hai gli URL definitivi:
+        // updateExternalLinks('https://miodominio.com/notizie', 'https://miodominio.com/convenzioni');
+    </script>
+</body>
+</html>

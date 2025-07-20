@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { /* ... (config invariata) ... */ }
+    </script>
+    <title>Tutte le Convenzioni | MyApp</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .glass-effect { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.18); }
+        .nav-item:hover { transform: translateY(-3px); transition: all 0.3s ease; }
+        .gradient-text { background: linear-gradient(135deg, #2400C1, #8E008C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="glass-effect fixed top-0 left-0 right-0 z-20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+             <h1 class="text-2xl font-bold gradient-text">Tutte le Convenzioni</h1>
+            <a href="/public/logout.html" class="text-danger font-semibold">Logout</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 pt-24 pb-28 space-y-6">
+        <div class="relative">
+            <input type="text" id="search-convenzioni" placeholder="Cerca per nome o categoria..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-primary focus:border-primary">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+            </div>
+        </div>
+
+        <div id="convenzioni-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <p class="text-gray-500 col-span-full">Caricamento convenzioni in corso...</p>
+        </div>
+    </main>
+    
+    <nav class="fixed bottom-0 left-0 right-0 glass-effect z-20">
+        </nav>
+    
+    <script src="../scripts/main.js"></script>
+<nav class="footer-nav">
+    <div class="footer-nav-container">
+        <a href="home.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🏠</span>
+            <span class="footer-nav-label">Home</span>
+        </a>
+        <a href="tessera.html" class="footer-nav-item">
+            <span class="footer-nav-icon">💳</span>
+            <span class="footer-nav-label">Tessera</span>
+        </a>
+        <a href="servizi.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🛠️</span>
+            <span class="footer-nav-label">Servizi</span>
+        </a>
+        <a href="profilo.html" class="footer-nav-item">
+            <span class="footer-nav-icon">👤</span>
+            <span class="footer-nav-label">Profilo</span>
+        </a>
+    </div>
+</nav>
+    </nav>
+</body>
+</html><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { /* ... (config invariata) ... */ }
+    </script>
+    <title>Dirigenti Sindacali | MyApp</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .glass-effect { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.18); }
+        .nav-item:hover { transform: translateY(-3px); transition: all 0.3s ease; }
+        .gradient-text { background: linear-gradient(135deg, #2400C1, #8E008C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="glass-effect fixed top-0 left-0 right-0 z-20">
+         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+             <h1 class="text-2xl font-bold gradient-text">Dirigenti Sindacali</h1>
+            <a href="/public/logout.html" class="text-danger font-semibold">Logout</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 pt-24 pb-28 space-y-4">
+        <div>
+            <h2 class="text-3xl font-bold text-textDark">I Tuoi Riferimenti</h2>
+            <p class="text-gray-500">Contatta i dirigenti per qualsiasi necessità.</p>
+        </div>
+        <div id="dirigenti-list" class="space-y-4">
+            <p class="text-gray-500">Caricamento lista dirigenti...</p>
+        </div>
+    </main>
+    
+    <nav class="fixed bottom-0 left-0 right-0 glass-effect z-20">
+       <div class="container mx-auto flex justify-around py-3">
+            <a href="home.html" class="nav-item flex flex-col items-center text-gray-600 hover:text-primary p-3">
+                <span class="text-3xl">🏠</span><span class="text-xs mt-1">Home</span>
+            </a>
+            <a href="tessera.html" class="nav-item flex flex-col items-center text-gray-600 hover:text-primary p-3">
+                <span class="text-3xl">💳</span><span class="text-xs mt-1">Tessera</span>
+            </a>
+            <a href="servizi.html" class="nav-item flex flex-col items-center text-gray-600 hover:text-primary p-3">
+                <span class="text-3xl">🛠️</span><span class="text-xs mt-1">Servizi</span>
+            </a>
+            <a href="profilo.html" class="nav-item flex flex-col items-center text-gray-600 hover:text-primary p-3">
+                <span class="text-3xl">👤</span><span class="text-xs mt-1">Profilo</span>
+            </a>
+        </div>
+    </nav>
+    
+    <script src="../scripts/main.js"></script>
+<nav class="footer-nav">
+    <div class="footer-nav-container">
+        <a href="home.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🏠</span>
+            <span class="footer-nav-label">Home</span>
+        </a>
+        <a href="tessera.html" class="footer-nav-item">
+            <span class="footer-nav-icon">💳</span>
+            <span class="footer-nav-label">Tessera</span>
+        </a>
+        <a href="servizi.html" class="footer-nav-item">
+            <span class="footer-nav-icon">🛠️</span>
+            <span class="footer-nav-label">Servizi</span>
+        </a>
+        <a href="profilo.html" class="footer-nav-item">
+            <span class="footer-nav-icon">👤</span>
+            <span class="footer-nav-label">Profilo</span>
+        </a>
+    </div>
+</nav>
+    </nav>
+</body>
+</html>

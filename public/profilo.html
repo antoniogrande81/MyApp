@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mio Profilo | MyApp</title>
+
+    <!-- Scripts e Librerie -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Personalizzato NUOVO -->
+    <link rel="stylesheet" href="../css/custom.css?v=2024">
+
+    <!-- PWA -->
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <!-- Configurazione Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', 
+              secondary: '#8E008C', 
+              accent: '#00BFFF',
+              textDark: '#1C1C1E', 
+              backgroundLight: '#F4F4F8', 
+              white: '#FFFFFF',
+              danger: '#DC2626',
+            },
+            fontFamily: { 
+                sans: ['Inter', 'Segoe UI', 'Roboto', 'sans-serif'] 
+            },
+          }
+        }
+      }
+    </script>
+</head>
+
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <!-- HEADER UNIFORME -->
+    <header class="glass-effect uniform-header">
+        <div class="uniform-container">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold gradient-text">Mio Profilo</h1>
+                <a href="/public/logout.html" class="text-danger-important font-semibold hover:opacity-80 transition-opacity">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content uniform-container">
+        <div>
+            <h2 class="text-3xl font-bold text-textDark mb-2">Gestisci il tuo Account</h2>
+            <p class="text-gray-600 mb-6">Modifica le tue informazioni personali e le preferenze dell'account.</p>
+        </div>
+        
+        <!-- Form Profilo -->
+        <div class="max-w-lg mx-auto bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-xl hover-lift">
+            <form id="profileForm" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email (non modificabile)
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        readonly 
+                        class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none"
+                        placeholder="Caricamento..."
+                    >
+                </div>
+                
+                <div>
+                    <label for="nome" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nome
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nome" 
+                        name="nome" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary transition-colors"
+                        placeholder="Inserisci il tuo nome"
+                    >
+                </div>
+                
+                <div>
+                    <label for="cognome" class="block text-sm font-medium text-gray-700 mb-2">
+                        Cognome
+                    </label>
+                    <input 
+                        type="text" 
+                        id="cognome" 
+                        name="cognome" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary transition-colors"
+                        placeholder="Inserisci il tuo cognome"
+                    >
+                </div>
+                
+                <div>
+                    <label for="telefono" class="block text-sm font-medium text-gray-700 mb-2">
+                        Telefono
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="telefono" 
+                        name="telefono" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary transition-colors"
+                        placeholder="Inserisci il tuo numero di telefono"
+                    >
+                </div>
+                
+                <button 
+                    type="submit" 
+                    class="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                    💾 Salva Modifiche
+                </button>
+                
+                <div id="profileFeedback" class="hidden mt-4 text-center p-3 rounded-lg"></div>
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER NAVIGATION UNIFORME -->
+    <nav class="footer-nav">
+        <div class="footer-nav-container">
+            <a href="home.html" class="footer-nav-item" id="nav-home">
+                <span class="footer-nav-icon">🏠</span>
+                <span class="footer-nav-label">Home</span>
+            </a>
+            <a href="tessera.html" class="footer-nav-item" id="nav-tessera">
+                <span class="footer-nav-icon">💳</span>
+                <span class="footer-nav-label">Tessera</span>
+            </a>
+            <a href="servizi.html" class="footer-nav-item" id="nav-servizi">
+                <span class="footer-nav-icon">🛡️</span>
+                <span class="footer-nav-label">Servizi</span>
+            </a>
+            <a href="profilo.html" class="footer-nav-item" id="nav-profilo">
+                <span class="footer-nav-icon">👤</span>
+                <span class="footer-nav-label">Profilo</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/main.js"></script>
+    
+    <!-- Script di Attivazione Navigation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mappa pagina → tab da evidenziare
+            const pageNavMap = {
+                'home': 'nav-home',
+                'tessera': 'nav-tessera',
+                'servizi': 'nav-servizi',
+                'profilo': 'nav-profilo',
+                'turni': 'nav-servizi',
+                'dirigenti': 'nav-servizi',
+                'convenzioni': 'nav-servizi',
+                'tutte-convenzioni': 'nav-servizi',
+                'tutte-notizie': 'nav-home',
+                'gestione-contenuti': 'nav-servizi',
+                'dirigente-dashboard': 'nav-servizi',
+                'admin': 'nav-servizi',
+                'virgilio': 'nav-servizi',
+                'notifiche': 'nav-home'
+            };
+            
+            // Determina pagina corrente
+            const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+            
+            // Attiva il tab corretto
+            const activeNavId = pageNavMap[currentPage];
+            if (activeNavId) {
+                const activeElement = document.getElementById(activeNavId);
+                if (activeElement) {
+                    activeElement.classList.add('active');
+                }
+            }
+            
+            console.log(`🎯 Pagina: ${currentPage} → Tab attivo: ${activeNavId}`);
+        });
+    </script>
+    
+    <!-- Script specifici per la gestione del profilo -->
+    <script>
+        // Qui vanno le funzioni specifiche per il profilo
+        // (le funzioni JavaScript originali rimangono invariate)
+        
+        // Esempio di feedback visivo migliorato
+        function showProfileFeedback(message, type = 'success') {
+            const feedback = document.getElementById('profileFeedback');
+            const colors = {
+                success: 'bg-green-100 border-green-400 text-green-700',
+                error: 'bg-red-100 border-red-400 text-red-700',
+                warning: 'bg-yellow-100 border-yellow-400 text-yellow-700'
+            };
+            
+            feedback.innerHTML = `
+                <div class="${colors[type]} px-4 py-3 rounded border">
+                    <p class="font-medium">${message}</p>
+                </div>
+            `;
+            feedback.classList.remove('hidden');
+            
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // Test della funzione
+        // showProfileFeedback('Profilo caricato correttamente!', 'success');
+    </script>
+</body>
+</html>
