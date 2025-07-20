@@ -1,13 +1,13 @@
 // ========================================================================
-//                    SERVICE WORKER - VERSIONE CORRETTA
-//              Gestione PWA con cache migliorata e error handling
+//                    SERVICE WORKER - VERSIONE PULITA
+//              Semplice e funzionale, senza errori
 // ========================================================================
 
-const CACHE_NAME = 'sindacato-app-v1.2';
-const CACHE_STATIC_NAME = 'sindacato-static-v1.2';
-const CACHE_DYNAMIC_NAME = 'sindacato-dynamic-v1.2';
+const CACHE_NAME = 'sindacato-app-v2';
+const STATIC_CACHE = 'sindacato-static-v2';
+const DYNAMIC_CACHE = 'sindacato-dynamic-v2';
 
-// File statici da cachare (solo quelli che esistono realmente)
+// File da cachare (solo quelli essenziali)
 const STATIC_FILES = [
     '/',
     '/app/',
@@ -15,228 +15,95 @@ const STATIC_FILES = [
     '/app/tessera.html',
     '/app/profilo.html',
     '/app/dirigenti.html',
-    '/app/dirigente-dashboard.html',
     '/public/login.html',
-    '/public/register.html',
-    '/main.js',
-    '/manifest.json',
-    // Aggiungi qui solo i file CSS/JS che esistono realmente
-    // Non includere CDN esterni che potrebbero causare errori CORS
+    '/main.js'
 ];
 
-// URL esterni che NON devono essere cachati
-const EXTERNAL_URLS = [
-    'https://cdn.tailwindcss.com',
-    'https://cdn.jsdelivr.net',
-    'https://api.qrserver.com',
-    'https://ui-avatars.com',
-    'https://lycrgzptkdkksukcwrld.supabase.co'
-];
-
-// Controlla se un URL è esterno
-const isExternalUrl = (url) => {
-    return EXTERNAL_URLs.some(external => url.startsWith(external));
-};
-
-// Controlla se un file esiste prima di aggiungerlo alla cache
-const fileExists = async (url) => {
-    try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.ok;
-    } catch (error) {
-        return false;
-    }
-};
-
-// --- EVENTO INSTALL ---
-self.addEventListener('install', (event) => {
-    console.log('🔧 Service Worker: Installing...');
-    
+// --- INSTALL EVENT ---
+self.addEventListener('install', event => {
+    console.log('SW: Installing...');
     event.waitUntil(
-        (async () => {
-            try {
-                const cache = await caches.open(CACHE_STATIC_NAME);
-                console.log('✅ Service Worker: Cache aperta.');
-                
-                // Filtra solo i file che esistono realmente
-                const existingFiles = [];
-                for (const file of STATIC_FILES) {
-                    if (await fileExists(file)) {
-                        existingFiles.push(file);
-                    } else {
-                        console.warn(`⚠️ File non trovato, saltato: ${file}`);
-                    }
-                }
-                
-                if (existingFiles.length > 0) {
-                    await cache.addAll(existingFiles);
-                    console.log('✅ Service Worker: File statici aggiunti alla cache:', existingFiles.length);
-                } else {
-                    console.warn('⚠️ Service Worker: Nessun file statico da cachare');
-                }
-                
-                // Forza l'attivazione del nuovo service worker
-                self.skipWaiting();
-                
-            } catch (error) {
-                console.error('❌ Service Worker: Errore durante il caching:', error);
-                // Non bloccare l'installazione anche se il caching fallisce
-            }
-        })()
+        caches.open(STATIC_CACHE)
+            .then(cache => {
+                console.log('SW: Caching static files...');
+                return cache.addAll(STATIC_FILES.map(url => new Request(url, {cache: 'reload'})));
+            })
+            .catch(error => {
+                console.error('SW: Install failed:', error);
+                // Non bloccare l'installazione
+                return Promise.resolve();
+            })
+            .then(() => {
+                console.log('SW: Install complete');
+                return self.skipWaiting();
+            })
     );
 });
 
-// --- EVENTO ACTIVATE ---
-self.addEventListener('activate', (event) => {
-    console.log('🚀 Service Worker: Activating...');
-    
+// --- ACTIVATE EVENT ---
+self.addEventListener('activate', event => {
+    console.log('SW: Activating...');
     event.waitUntil(
-        (async () => {
-            try {
-                // Pulisci le cache vecchie
-                const cacheNames = await caches.keys();
-                const deletePromises = cacheNames
-                    .filter(name => name !== CACHE_STATIC_NAME && name !== CACHE_DYNAMIC_NAME)
-                    .map(name => {
-                        console.log(`🗑️ Eliminando cache vecchia: ${name}`);
-                        return caches.delete(name);
+        caches.keys()
+            .then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+                            console.log('SW: Deleting old cache:', cacheName);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                console.log('SW: Activation complete');
+                return self.clients.claim();
+            })
+    );
+});
+
+// --- FETCH EVENT ---
+self.addEventListener('fetch', event => {
+    const request = event.request;
+    
+    // Ignora richieste non-GET
+    if (request.method !== 'GET') {
+        return;
+    }
+    
+    // Ignora richieste cross-origin complesse
+    if (!request.url.startsWith(self.location.origin)) {
+        return;
+    }
+    
+    event.respondWith(
+        caches.match(request)
+            .then(cachedResponse => {
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                
+                return fetch(request)
+                    .then(networkResponse => {
+                        // Cache solo risposte valide
+                        if (networkResponse.status === 200) {
+                            const responseClone = networkResponse.clone();
+                            caches.open(DYNAMIC_CACHE)
+                                .then(cache => {
+                                    cache.put(request, responseClone);
+                                });
+                        }
+                        return networkResponse;
+                    })
+                    .catch(() => {
+                        // Fallback per pagine offline
+                        if (request.destination === 'document') {
+                            return caches.match('/app/home.html');
+                        }
+                        return new Response('Offline', {status: 503});
                     });
-                
-                await Promise.all(deletePromises);
-                
-                // Prendi il controllo di tutte le schede aperte
-                await self.clients.claim();
-                
-                console.log('✅ Service Worker: Attivato e pronto');
-            } catch (error) {
-                console.error('❌ Service Worker: Errore durante attivazione:', error);
-            }
-        })()
+            })
     );
 });
 
-// --- EVENTO FETCH ---
-self.addEventListener('fetch', (event) => {
-    const { request } = event;
-    const url = new URL(request.url);
-    
-    // Ignora richieste non HTTP/HTTPS
-    if (!request.url.startsWith('http')) {
-        return;
-    }
-    
-    // Strategia Cache-First per file statici
-    if (STATIC_FILES.includes(url.pathname)) {
-        event.respondWith(cacheFirst(request));
-        return;
-    }
-    
-    // Network-First per API Supabase e contenuti dinamici
-    if (isExternalUrl(request.url)) {
-        event.respondWith(networkFirst(request));
-        return;
-    }
-    
-    // Cache-First per tutto il resto
-    event.respondWith(cacheFirst(request));
-});
-
-// --- STRATEGIA CACHE-FIRST ---
-async function cacheFirst(request) {
-    try {
-        // Cerca prima nella cache
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        // Se non in cache, fetch dalla rete
-        const networkResponse = await fetch(request);
-        
-        // Caches la risposta se valida (solo per richieste GET)
-        if (networkResponse.ok && request.method === 'GET') {
-            const cache = await caches.open(CACHE_DYNAMIC_NAME);
-            cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-        
-    } catch (error) {
-        console.error('❌ Service Worker: Errore Cache-First:', error);
-        
-        // Fallback per pagine offline
-        if (request.destination === 'document') {
-            const cache = await caches.open(CACHE_STATIC_NAME);
-            return cache.match('/app/home.html') || cache.match('/');
-        }
-        
-        // Risposta di fallback per altri tipi di richiesta
-        return new Response('Contenuto non disponibile offline', {
-            status: 503,
-            statusText: 'Service Unavailable'
-        });
-    }
-}
-
-// --- STRATEGIA NETWORK-FIRST ---
-async function networkFirst(request) {
-    try {
-        // Prova prima la rete
-        const networkResponse = await fetch(request);
-        
-        // Cache la risposta se valida
-        if (networkResponse.ok && request.method === 'GET') {
-            const cache = await caches.open(CACHE_DYNAMIC_NAME);
-            cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-        
-    } catch (error) {
-        console.warn('⚠️ Service Worker: Network failed, trying cache:', request.url);
-        
-        // Fallback alla cache se la rete fallisce
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        // Risposta di fallback
-        return new Response('Risorsa non disponibile offline', {
-            status: 503,
-            statusText: 'Service Unavailable'
-        });
-    }
-}
-
-// --- GESTIONE MESSAGGI ---
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
-    
-    if (event.data && event.data.type === 'GET_VERSION') {
-        event.ports[0].postMessage({ version: CACHE_NAME });
-    }
-});
-
-// --- CLEANUP PERIODICO CACHE ---
-self.addEventListener('message', async (event) => {
-    if (event.data && event.data.type === 'CLEANUP_CACHE') {
-        try {
-            const cache = await caches.open(CACHE_DYNAMIC_NAME);
-            const requests = await cache.keys();
-            
-            // Mantieni solo gli ultimi 50 elementi nella cache dinamica
-            if (requests.length > 50) {
-                const toDelete = requests.slice(0, requests.length - 50);
-                await Promise.all(toDelete.map(request => cache.delete(request)));
-                console.log(`🗑️ Rimossi ${toDelete.length} elementi dalla cache dinamica`);
-            }
-        } catch (error) {
-            console.error('❌ Errore cleanup cache:', error);
-        }
-    }
-});
-
-console.log('📦 Service Worker: Script caricato');
+console.log('SW: Script loaded');
