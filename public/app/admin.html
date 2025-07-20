@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pannello Admin | MyApp</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/custom.css">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#2400C1">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2400C1', secondary: '#8E008C', textDark: '#1C1C1E',
+              backgroundLight: '#F4F4F8', white: '#FFFFFF', danger: '#DC2626',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        /* Stili specifici per questa pagina */
+        .glass-effect { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #2400C1, #8E008C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-backgroundLight font-sans text-textDark">
+
+    <header class="glass-effect fixed top-0 left-0 right-0 z-20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+             <h1 class="text-2xl font-bold gradient-text">Pannello Admin</h1>
+             <div class="flex items-center space-x-4">
+                <a href="/app/home.html" class="text-sm font-semibold text-gray-700 hover:text-primary">Vista Utente</a>
+                <a href="/app/dirigente-dashboard.html" class="text-sm font-semibold text-gray-700 hover:text-primary">Vista Dirigente</a>
+                <a href="/public/logout.html" class="text-danger font-semibold">Logout</a>
+             </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 pt-24 pb-12 space-y-6">
+        <div>
+            <h2 class="text-3xl font-bold text-textDark">Gestione Utenti e Ruoli</h2>
+            <p class="text-gray-500">Assegna uno o più ruoli agli utenti registrati.</p>
+        </div>
+        
+        <div id="adminFeedback" class="hidden"></div>
+        
+        <div class="bg-white p-4 rounded-2xl shadow-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utente</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruoli Attuali</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assegna Ruolo</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table-body" class="bg-white divide-y divide-gray-200">
+                    <tr><td colspan="3" class="text-center p-4 text-gray-500">Caricamento utenti...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    
+    <script src="../scripts/main.js"></script>
+
+</body>
+</html>
