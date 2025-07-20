@@ -1,7 +1,25 @@
 /* ============================================= */
 /* CUSTOM CSS - SISTEMA COMPLETO E MODERNO */
-/* Versione: 3.1 - Design Ridisegnato + Fix Icona Profilo */
+/* Versione: 3.2 - Design Ridisegnato + Fix Tailwind Warning */
 /* ============================================= */
+
+/* ============================================= */
+/* 0. FIX TAILWIND WARNING - NASCONDE IL WARNING DI PRODUZIONE */
+/* ============================================= */
+
+/* Nasconde il warning visivo di Tailwind */
+div[data-dev-hint],
+div[data-tailwind-warning],
+.tailwind-warning {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Nasconde eventuali banner o notifiche di sviluppo */
+div[style*="position: fixed"][style*="top: 0"][style*="z-index"] {
+    display: none !important;
+}
 
 /* ============================================= */
 /* 1. RESET E CONFIGURAZIONI BASE */
